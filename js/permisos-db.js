@@ -228,6 +228,22 @@ const PERMISOS_DB = {
         imagen: 'images/img-permiso-certificado.png'
     },
 
+                
+                'ALCO-56510': {
+        folio: 'ALCO-56510',
+        estatus: 'vigente',
+        marca: 'KAWASAKI',
+        linea: 'NINJA 650',
+        modelo: '2025',
+        color: 'VERDE',
+        numeroSerie: 'ML5EXEP15SDAG1930',
+        numeroMotor: '',
+        fechaExpedicion: '2026-06-05',
+        fechaVigencia: '2026-07-07',
+        nombre: 'LUIS ANTONIO GOMEZ ROSAS',
+        imagen: 'images/img-permiso-certificado.png'
+    },
+
 
     
     // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
