@@ -224,7 +224,7 @@ const PERMISOS_DB = {
         numeroMotor: '',
         fechaExpedicion: '2026-06-05',
         fechaVigencia: '2026-07-07',
-        nombre: 'CHRISTIAN SALVADOR NAVARRETE JIMENEZS',
+        nombre: 'CHRISTIAN SALVADOR NAVARRETE JIMENEZ',
         imagen: 'images/img-permiso-certificado.png'
     },
 
