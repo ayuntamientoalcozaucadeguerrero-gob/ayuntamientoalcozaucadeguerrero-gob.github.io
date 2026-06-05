@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Tramites - H. Municipio de Alcozauca de Guerrero</title>
+
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&amp;display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Estilos personalizados */
+        .custom-background {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        }
+        
+        .custom-links-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .custom-links-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        }
+        
+        .custom-verificar-button {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+        
+        .custom-verificar-button:hover {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-2px);
+        }
+        
+        .custom-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .custom-text-justify {
+            text-align: justify;
+        }
+        
+        .custom-concept-list {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        
+        .custom-concept-list li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <div id="app">
+        <!-- Contenido principal -->
+        <div class="flex flex-col min-h-screen bg-gray-100">
+            <div class="flex-1">
+                <!-- Navigation -->
+                <nav class="bg-white border-b border-gray-100">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex justify-between h-16">
+                            <div class="flex">
+                                <!-- Logo -->
+                                <div class="shrink-0 flex items-center">
+                                    <a href="inicio.html">
+                                        <img 
+                                            src="images/ALCOZAUCA_LOGO_2.png" 
+                                            alt="Logo del Ayuntamiento" 
+                                            class="h-16 mr-4 block h-9 w-auto fill-current text-gray-800">
+                                    </a>
+                                </div>
+                                
+                                <!-- Navigation Links -->
+                                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <a 
+                                        class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                        href="inicio.html">
+                                        Inicio
+                                    </a>
+                                    <a 
+                                        class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" 
+                                        href="tramites.html">
+                                        Tramites
+                                    </a>
+                                    <a 
+                                        class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                        href="https://hayuntamientoalcozaucadeguerrero.gob.mx/contacto">
+                                        Contacto
+                                    </a>
+                                    <a 
+                                        class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                        href="https://hayuntamientoalcozaucadeguerrero.gob.mx/login">
+                                        Panel Administrativo
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Settings Dropdown -->
+                            <div class="hidden sm:flex sm:items-center sm:ms-6"></div>
+                            
+                            <!-- Mobile menu button -->
+                            <div class="-me-2 flex items-center sm:hidden">
+                                <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                        <path 
+                                            class="inline-flex" 
+                                            stroke-linecap="round" 
+                                            stroke-linejoin="round" 
+                                            stroke-width="2" 
+                                            d="M4 6h16M4 12h16M4 18h16">
+                                        </path>
+                                        <path 
+                                            class="hidden" 
+                                            stroke-linecap="round" 
+                                            stroke-linejoin="round" 
+                                            stroke-width="2" 
+                                            d="M6 18L18 6M6 6l12 12">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Navigation Menu -->
+                    <div class="hidden sm:hidden">
+                        <div class="pt-2 pb-3 space-y-1">
+                            <a 
+                                class="block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                href="inicio.html">
+                                Inicio
+                            </a>
+                        </div>
+                        <div class="pt-2 pb-3 space-y-1">
+                            <a 
+                                class="block w-full ps-3 pe-4 py-2 border-l-4 border-indigo-400 text-start text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out" 
+                                href="tramites.html">
+                                Tramites
+                            </a>
+                        </div>
+                        <div class="pt-2 pb-3 space-y-1">
+                            <a 
+                                class="block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                href="https://hayuntamientoalcozaucadeguerrero.gob.mx/contacto">
+                                Contacto
+                            </a>
+                        </div>
+                        <div class="pt-2 pb-3 space-y-1">
+                            <a 
+                                class="block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                href="https://hayuntamientoalcozaucadeguerrero.gob.mx/login">
+                                Panel Administrativo
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                            Trámites y Servicios
+                        </h2>
+                    </div>
+                </header>                
+                <!-- Contenido principal -->
+                <main class="flex-1 custom-background">
+                    <!-- Sección de Consulta de Permisos -->
+                    <div class="container mx-auto p-6">
+                        <h3 class="text-3xl font-semibold text-center text-gray-900 mb-6">
+                            Consulta tu Permiso Vehicular
+                        </h3>
+                        
+                        <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8 mb-12">
+                            <div class="text-center mb-6">
+                                <i class="bi bi-search text-blue-500 text-4xl mb-4"></i>
+                                <p class="text-gray-600">
+                                    Ingresa el folio de tu permiso para verificar su autenticidad y vigencia
+                                </p>
+                            </div>
+                            
+                            <form id="form-busqueda-permiso" class="space-y-4">
+                                <div>
+                                    <label for="folio-permiso" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Folio del Permiso:
+                                    </label>
+                                    <div class="relative">
+                                        <input 
+                                            type="text" 
+                                            id="folio-permiso" 
+                                            name="folio" 
+                                            placeholder="Ejemplo: ALCO-56492"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center font-mono text-lg uppercase"
+                                            maxlength="10"
+                                            pattern="ALCO-[0-9]{5}"
+                                            required>
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <i class="bi bi-file-text text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        El formato debe ser: ALCO-XXXXX (donde X son números)
+                                    </p>
+                                </div>
+                                
+                                <button 
+                                    type="submit" 
+                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">
+                                    <i class="bi bi-search mr-2"></i>
+                                    Consultar Permiso
+                                </button>
+                            </form>
+                            
+                            <!-- Mensajes de estado -->
+                            <div id="mensaje-busqueda" class="mt-4 hidden">
+                                <div id="mensaje-error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg hidden">
+                                    <i class="bi bi-exclamation-triangle mr-2"></i>
+                                    <span id="texto-error"></span>
+                                </div>
+                                <div id="mensaje-exito" class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg hidden">
+                                    <i class="bi bi-check-circle mr-2"></i>
+                                    Redirigiendo a la información del permiso...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección de Enlaces Útiles -->
+                    <div class="container mx-auto p-6">
+                        <h3 class="text-3xl font-semibold text-center text-gray-900 mb-6">
+                            Te ayudamos a realizar tus Trámites
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-4/5 mx-auto">
+                            <!-- Primera columna con 4 enlaces -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- REPUVE -->
+                                <a href="https://www.repuve-consultar.com/consulta-ciudadana" 
+                                   target="_blank" 
+                                   class="custom-links-button block p-4 text-white text-center rounded-lg shadow-lg transition duration-300">
+                                    <div class="flex w-full justify-evenly">
+                                        <img src="images/logorepuve.png" alt="Logo de REPUVE" class="w-2/5">
+                                        <div class="flex flex-col align-center justify-center">
+                                            <div class="font-bold">REPUVE CONSULTAR</div>
+                                            <div>Consulta auto en REPUVE</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Ley de Ingresos -->
+                                <a href="https://congresogro.gob.mx/legislacion/leyes-ingresos/2023/2023-ley-numero-263-de-ingresos-para-el-municipio-de-alcozauca-de-guerrero.pdf" 
+                                   target="_blank" 
+                                   class="custom-links-button block p-4 text-white text-center rounded-lg shadow-lg transition duration-300">
+                                    <div class="flex w-full justify-evenly">
+                                        <img src="images/logo-congresogro-63-04.svg" alt="Logo Congreso Guerrero" class="w-1/6">
+                                        <div class="flex flex-col align-center justify-center">
+                                            <div class="font-bold">Ley de Ingresos 2023</div>
+                                            <div>Consulta la ley de ingresos</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Acta de Nacimiento -->
+                                <a href="https://www.gob.mx/ActaNacimiento/" 
+                                   target="_blank" 
+                                   class="custom-links-button block p-4 text-white text-center rounded-lg shadow-lg transition duration-300">
+                                    <div class="flex w-full justify-evenly">
+                                        <img src="images/logocurp.svg" alt="Logo ActaNacimiento" class="w-1/6">
+                                        <div class="flex flex-col align-center justify-center">
+                                            <div class="font-bold">Acta de Nacimiento</div>
+                                            <div>Consulta tu Acta de Nacimiento</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- WhatsApp -->
+                                <a href="https://wa.me/+527551022649" 
+                                   target="_blank" 
+                                   class="custom-links-button block p-4 text-white text-center rounded-lg shadow-lg transition duration-300">
+                                    <div class="flex w-full justify-evenly">
+                                        <img src="images/whatsapp-icon.svg" alt="WhatsApp Icon" class="w-1/6">
+                                        <div class="flex flex-col align-center justify-center">
+                                            <div class="font-bold">Inicia tu trámite</div>
+                                            <div>Comunícate a través de WhatsApp</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <!-- Segunda columna -->
+                            <div class="space-y-4">
+                                <!-- CURP -->
+                                <a href="https://www.gob.mx/curp/" 
+                                   target="_blank" 
+                                   class="custom-links-button block p-4 text-white text-center rounded-lg shadow-lg transition duration-300">
+                                    <div class="flex w-full justify-evenly">
+                                        <img src="images/logocurp.svg" alt="Logo CURP" class="w-2/5">
+                                        <div class="flex flex-col align-center justify-center">
+                                            <div class="font-bold">GOBIERNO DE MÉXICO</div>
+                                            <div>Consulta tu CURP</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Verificaciones -->
+                                <div class="grid sm:grid-cols-3 gap-4">
+                                    <!-- Verificar Permiso Vehicular -->
+                                    <a href="tramites.html" 
+                                       class="custom-verificar-button block p-4 text-white text-center rounded-lg shadow-lg transition duration-300">
+                                        <i class="fa-regular fa-file-lines text-6xl align-baseline"></i>
+                                        <div class="font-bold text-wrap">Verifica tu permiso vehicular</div>
+                                    </a>
+                                    
+                                    <!-- Verificar Permiso de Carga -->
+                                    <a href="https://hayuntamientoalcozaucadeguerrero.gob.mx/verificar-permiso-carga" 
+                                       class="custom-verificar-button block p-4 text-white text-center rounded-lg shadow-lg transition duration-300">
+                                        <i class="fa-solid fa-truck text-6xl"></i>
+                                        <div class="font-bold">Verifica tu permiso de carga</div>
+                                    </a>
+                                    
+                                    <!-- Verificar Licencia -->
+                                    <a href="https://hayuntamientoalcozaucadeguerrero.gob.mx/verificar-licencia" 
+                                       class="custom-verificar-button block p-4 text-white text-center rounded-lg shadow-lg transition duration-300">
+                                        <i class="fa-solid fa-id-card text-6xl"></i>
+                                        <div class="font-bold">Verifica tu licencia de conducir</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <!-- Sección de Licencias de Conducir -->
+                    <div class="container mx-auto p-6">
+                        <h3 class="text-3xl font-semibold text-center text-gray-900 mb-6">
+                            Licencias de Conducir
+                        </h3>
+                        
+                        <p class="text-center text-lg text-gray-600 mb-12">
+                            La licencia de conducir es el documento oficial que otorga el H. Ayuntamiento de Alcozauca, Guerrero, 
+                            para autorizar la conducción de vehículos en vías públicas. Es personal e intransferible, y está 
+                            disponible en diferentes categorías dependiendo del tipo de vehículo.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Chofer -->
+                            <div class="custom-card p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 custom-text-justify">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Chofer</h4>
+                                <p class="text-gray-600">
+                                    Vehículos de motor destinados al uso particular y público (automóviles, camionetas y furgonetas) 
+                                    cuyo peso no exceda las 3.5 toneladas.
+                                </p>
+                            </div>
+                            
+                            <!-- Automovilista -->
+                            <div class="custom-card p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 custom-text-justify">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Automovilista</h4>
+                                <p class="text-gray-600">
+                                    Vehículos de motor destinados al uso exclusivo particular, no autoriza carga.
+                                </p>
+                            </div>
+                            
+                            <!-- Motociclista -->
+                            <div class="custom-card p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 custom-text-justify">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Motociclista</h4>
+                                <p class="text-gray-600">
+                                    Toda clase de motobicicletas y motocicletas de 2, 3 y 4 ruedas con motores fijos. 
+                                    *No autoriza conducir cualquier otro tipo de vehículo.
+                                </p>
+                            </div>
+                            
+                            <!-- Permiso para Menores -->
+                            <div class="custom-card p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 custom-text-justify">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Permiso para Menores</h4>
+                                <p class="text-gray-600">
+                                    Uso exclusivo para vehículos automotores por vía terrestre. Deberá conducir sólo bajo la supervisión 
+                                    y compañía de un adulto que cuente con licencia de conducir vigente. No podrá manejar después de las 10 de la noche.
+                                </p>
+                            </div>
+                            
+                            <!-- Requisitos -->
+                            <div class="custom-card p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 custom-text-justify">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Requisitos</h4>
+                                <ul class="custom-concept-list">
+                                    <li>CURP (1 copia)</li>
+                                    <li>Identificación Oficial (1 copia)</li>
+                                    <li>Comprobante de domicilio (1 copia)</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Conceptos -->
+                            <div class="custom-card p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 custom-text-justify">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Conceptos</h4>
+                                <ul class="custom-concept-list">
+                                    <li>
+                                        <span class="font-bold">Para conductores del servicio particular con vigencia de un año</span>
+                                    </li>
+                                    <li>
+                                        <span class="font-bold">Por expedición o reposición por tres años:</span> 
+                                        Chofer, Automovilista, Motociclista, motonetas o similares, Duplicado de licencia por extravío.
+                                    </li>
+                                    <li>
+                                        <span class="font-bold">Por expedición o reposición por cinco años:</span> 
+                                        Chofer, Automovilista, Motociclista, motonetas o similares, Duplicado de licencia por extravío.
+                                    </li>
+                                    <li>
+                                        <span class="font-bold">Otros:</span> 
+                                        Licencia hasta por seis meses para menores de 18 años y mayores de 16, únicamente para vehículos de uso particular.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>                    
+                    <!-- Sección de Videos Educativos -->
+                    <div class="container mx-auto p-6">
+                        <h3 class="text-3xl font-semibold text-center text-gray-900 mt-12 mb-6">
+                            Aprende en 3 videos
+                        </h3>
+                        
+                        <p class="text-center text-lg text-gray-600 mb-8">
+                            Descubre los tipos de licencia y cómo verificar la autenticidad de permisos y licencias vehiculares.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Video 1: Tipos de licencia -->
+                            <div class="custom-card rounded-lg shadow-lg hover:shadow-xl transition duration-300 overflow-hidden">
+                                <div class="relative group cursor-pointer">
+                                    <img src="images/poster-tipos-licencia.PNG" 
+                                         alt="Tipos de licencia" 
+                                         class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                        <span class="text-white font-semibold">Ver video</span>
+                                    </div>
+                                    <span class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                                        0:13
+                                    </span>
+                                </div>
+                                <div class="p-4">
+                                    <h4 class="text-lg font-semibold text-gray-800">Tipos de licencia</h4>
+                                    <p class="text-gray-600 text-sm mt-1">Conoce las categorías disponibles y su uso.</p>
+                                    <button class="mt-3 custom-verificar-button text-white rounded px-3 py-2" 
+                                            aria-label="Reproducir video tipos de licencia">
+                                        Ver video
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Video 2: Veracidad de permiso -->
+                            <div class="custom-card rounded-lg shadow-lg hover:shadow-xl transition duration-300 overflow-hidden">
+                                <div class="relative group cursor-pointer">
+                                    <img src="images/poster-veracidad-permiso.PNG" 
+                                         alt="Veracidad de un permiso vehicular" 
+                                         class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                        <span class="text-white font-semibold">Ver video</span>
+                                    </div>
+                                    <span class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                                        0:13
+                                    </span>
+                                </div>
+                                <div class="p-4">
+                                    <h4 class="text-lg font-semibold text-gray-800">Veracidad de un permiso vehicular</h4>
+                                    <p class="text-gray-600 text-sm mt-1">Aprende a identificar un permiso auténtico.</p>
+                                    <button class="mt-3 custom-verificar-button text-white rounded px-3 py-2" 
+                                            aria-label="Reproducir video veracidad de permiso">
+                                        Ver video
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Video 3: Veracidad de licencia -->
+                            <div class="custom-card rounded-lg shadow-lg hover:shadow-xl transition duration-300 overflow-hidden">
+                                <div class="relative group cursor-pointer">
+                                    <img src="images/poster-veracidad-licencia.PNG" 
+                                         alt="Veracidad de una licencia vehicular" 
+                                         class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                        <span class="text-white font-semibold">Ver video</span>
+                                    </div>
+                                    <span class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                                        0:13
+                                    </span>
+                                </div>
+                                <div class="p-4">
+                                    <h4 class="text-lg font-semibold text-gray-800">Veracidad de una licencia vehicular</h4>
+                                    <p class="text-gray-600 text-sm mt-1">Elementos de seguridad y validación.</p>
+                                    <button class="mt-3 custom-verificar-button text-white rounded px-3 py-2" 
+                                            aria-label="Reproducir video veracidad de licencia">
+                                        Ver video
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección de Permisos Provisionales -->
+                    <div class="container mx-auto p-6">
+                        <h3 class="text-3xl font-semibold text-center text-gray-900 mt-12 mb-6">
+                            Permisos Provisionales
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Descripción del permiso -->
+                            <div class="custom-card p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 custom-text-justify">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">
+                                    Permiso Provisional para Circular sin Placas
+                                </h4>
+                                <p class="text-gray-600">
+                                    Este permiso permite la circulación de vehículos sin placas durante un período de 30 días, 
+                                    facilitando la regularización de documentos. Es necesario presentar la documentación del 
+                                    vehículo y cumplir con los requisitos establecidos por el Ayuntamiento.
+                                </p>
+                            </div>
+                            
+                            <!-- Requisitos -->
+                            <div class="custom-card p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 custom-text-justify">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Requisitos</h4>
+                                <ul class="custom-concept-list">
+                                    <li>Ser mayor de 18 años</li>
+                                    <li>CURP (1 copia)</li>
+                                    <li>Identificación oficial (1 copia)</li>
+                                    <li>Comprobante de domicilio (1 copia)</li>
+                                    <li>Factura del automóvil (1 copia)</li>
+                                    <li>Costo del permiso: $350</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Conceptos -->
+                            <div class="custom-card p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 custom-text-justify">
+                                <h4 class="text-xl font-semibold text-gray-800 mb-2">Conceptos</h4>
+                                <p class="text-gray-600">
+                                    Expedición de permiso provisional por treinta días para circular sin placas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>            
+            <!-- Footer -->
+            <footer class="bg-gray-800 text-white py-6 mt-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col sm:flex-row sm:items-start">
+                        <div class="flex justify-center mb-4 sm:mb-0 sm:mr-6">
+                            <img 
+                                src="images/ALCOZAUCA_LOGO_2.png" 
+                                alt="Logo del Ayuntamiento" 
+                                class="h-16">
+                        </div>
+                        <div class="text-center sm:text-left flex-1">
+                            <p>© 2024 - 2027 Honorable Ayuntamiento de Alcozauca, Guerrero.</p>
+                            <p>Portal web del Honorable Ayuntamiento de Alcozauca, Guerrero. En este portal podrás verificar la vigencia y autenticidad de los permisos y licencias expedidas por el municipio.</p>
+                            <p>Infórmate sobre los diferentes trámites que se pueden realizar para la expedición de permisos vehiculares y licencias de conducir.</p>
+                        </div>
+                    </div>
+                    <hr class="border border-white h-0 my-8 w-10/12 mx-auto">
+                    <div class="flex items-center justify-center">
+                        <h3 class="text-center">
+                            H. Ayuntamiento de Alcozauca de Guerrero, Guerrero 2024 - 2027
+                        </h3>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/permisos-db.js"></script>
+    <script>
+        // Script para manejar la búsqueda de permisos
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('form-busqueda-permiso');
+            const inputFolio = document.getElementById('folio-permiso');
+            const mensajeBusqueda = document.getElementById('mensaje-busqueda');
+            const mensajeError = document.getElementById('mensaje-error');
+            const mensajeExito = document.getElementById('mensaje-exito');
+            const textoError = document.getElementById('texto-error');
+            
+            // Formatear input mientras se escribe
+            inputFolio.addEventListener('input', function(e) {
+                let valor = e.target.value.toUpperCase().replace(/[^ALCO0-9-]/g, '');
+                
+                // Agregar formato ALCO- automáticamente
+                if (valor && !valor.startsWith('ALCO-')) {
+                    if (valor.startsWith('ALCO')) {
+                        valor = valor.substring(4);
+                    }
+                    valor = 'ALCO-' + valor.replace(/-/g, '');
+                }
+                
+                // Limitar a 10 caracteres (ALCO-XXXXX)
+                if (valor.length > 10) {
+                    valor = valor.substring(0, 10);
+                }
+                
+                e.target.value = valor;
+            });
+            
+            // Función para mostrar mensaje de error
+            function mostrarError(mensaje) {
+                textoError.textContent = mensaje;
+                mensajeError.classList.remove('hidden');
+                mensajeExito.classList.add('hidden');
+                mensajeBusqueda.classList.remove('hidden');
+            }
+            
+            // Función para mostrar mensaje de éxito
+            function mostrarExito() {
+                mensajeError.classList.add('hidden');
+                mensajeExito.classList.remove('hidden');
+                mensajeBusqueda.classList.remove('hidden');
+            }
+            
+            // Función para limpiar mensajes
+            function limpiarMensajes() {
+                mensajeBusqueda.classList.add('hidden');
+                mensajeError.classList.add('hidden');
+                mensajeExito.classList.add('hidden');
+            }
+            
+            // Manejar envío del formulario
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const folio = inputFolio.value.trim();
+                
+                // Limpiar mensajes previos
+                limpiarMensajes();
+                
+                // Validar que se ingresó un folio
+                if (!folio) {
+                    mostrarError('Por favor, ingrese el folio del permiso.');
+                    return;
+                }
+                
+                // Validar formato del folio
+                if (!validarFormatoFolio(folio)) {
+                    mostrarError('El formato del folio no es válido. Debe ser: ALCO-XXXXX (donde X son números)');
+                    return;
+                }
+                
+                // Buscar el permiso en la base de datos
+                const permiso = buscarPermiso(folio);
+                
+                if (permiso) {
+                    // Permiso encontrado - redirigir a index.html con el folio como parámetro
+                    mostrarExito();
+                    setTimeout(() => {
+                        window.location.href = `index.html?folio=${encodeURIComponent(folio)}`;
+                    }, 1500);
+                } else {
+                    mostrarError(`No se encontró ningún permiso con el folio "${folio}". Verifique que el número sea correcto.`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

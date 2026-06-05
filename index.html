@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es" data-lt-installed="true">
+<head>
+
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Resultado Búsqueda de Permisos - H. Municipio de Alcozauca de Guerrero</title>
+
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link 
+        href="https://fonts.bunny.net/css?family=figtree:400,500,600&amp;display=swap" 
+        rel="stylesheet">
+    <link 
+        href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" 
+        rel="stylesheet">
+    <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Estilos personalizados */
+        .custom-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .loading {
+            display: none;
+        }
+        
+        .error-message {
+            display: none;
+        }
+    </style></head>
+<body class="font-sans antialiased">
+    
+    <div id="app">
+        
+        <!-- Contenido principal -->
+        <div class="flex flex-col min-h-screen bg-gray-100">
+            <div class="flex-1">
+                <!-- Navigation -->
+                <nav class="bg-white border-b border-gray-100">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex justify-between h-16">
+                            <div class="flex">
+                                <!-- Logo -->
+                                <div class="shrink-0 flex items-center">
+                                    <a href="inicio.html">
+                                        <img 
+                                            src="images/ALCOZAUCA_LOGO_2.png" 
+                                            alt="Logo del Ayuntamiento" 
+                                            class="h-16 mr-4 block h-9 w-auto fill-current text-gray-800">
+                                    </a>
+                                </div>
+                                
+                                <!-- Navigation Links -->
+                                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <a 
+                                        class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                        href="inicio.html">
+                                        Inicio
+                                    </a>
+                                    <a 
+                                        class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                        href="tramites.html">
+                                        Tramites
+                                    </a>
+                                    <a 
+                                        class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                        href="inicio.html">
+                                        Contacto
+                                    </a>
+                                    <a 
+                                        class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                        href="https://hayuntamientoalcozaucadeguerrero.gob.mx/login">
+                                        Panel Administrativo
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Settings Dropdown -->
+                            <div class="hidden sm:flex sm:items-center sm:ms-6"></div>
+                            
+                            <!-- Mobile menu button -->
+                            <div class="-me-2 flex items-center sm:hidden">
+                                <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                        <path 
+                                            class="inline-flex" 
+                                            stroke-linecap="round" 
+                                            stroke-linejoin="round" 
+                                            stroke-width="2" 
+                                            d="M4 6h16M4 12h16M4 18h16">
+                                        </path>
+                                        <path 
+                                            class="hidden" 
+                                            stroke-linecap="round" 
+                                            stroke-linejoin="round" 
+                                            stroke-width="2" 
+                                            d="M6 18L18 6M6 6l12 12">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Navigation Menu -->
+                    <div class="hidden sm:hidden">
+                        <div class="pt-2 pb-3 space-y-1">
+                            <a 
+                                class="block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                href="inicio.html">
+                                Inicio
+                            </a>
+                        </div>
+                        <div class="pt-2 pb-3 space-y-1">
+                            <a 
+                                class="block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                href="tramites.html">
+                                Tramites
+                            </a>
+                        </div>
+                        <div class="pt-2 pb-3 space-y-1">
+                            <a 
+                                class="block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                href="https://hayuntamientoalcozaucadeguerrero.gob.mx/contacto">
+                                Contacto
+                            </a>
+                        </div>
+                        <div class="pt-2 pb-3 space-y-1">
+                            <a 
+                                class="block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out" 
+                                href="https://hayuntamientoalcozaucadeguerrero.gob.mx/login">
+                                Panel Administrativo
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+                
+                <!-- Page Header -->
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <h2 class="font-semibold text-2xl text-gray-800 leading-tight text-center mb-6">
+                            Resultado de Búsqueda de Permiso
+                        </h2>
+                    </div>
+                </header>
+                
+                <!-- Contenido principal -->
+                <main class="flex-1">
+                    <div class="py-12 bg-gray-50" id="contenido-permiso">
+                        <!-- El contenido se cargará dinámicamente mediante JavaScript -->
+                        <div class="max-w-7xl mx-auto px-4 lg:px-8">
+                            <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+                                <div class="p-8 text-center">
+                                    <i class="bi bi-hourglass-split text-blue-500 text-4xl mb-4"></i>
+                                    <p class="text-gray-600">Cargando información del permiso...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="bg-gray-800 text-white py-6 mt-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col sm:flex-row sm:items-start">
+                        <div class="flex justify-center mb-4 sm:mb-0 sm:mr-6">
+                            <img 
+                                src="images/ALCOZAUCA_LOGO_2.png" 
+                                alt="Logo del Ayuntamiento" 
+                                class="h-16">
+                        </div>
+                        <div class="text-center sm:text-left flex-1">
+                            <p>© 2024 - 2027 Honorable Ayuntamiento de Alcozauca, Guerrero.</p>
+                            <p>Portal web del Honorable Ayuntamiento de Alcozauca, Guerrero. En este portal podrás verificar la vigencia y autenticidad de los permisos y licencias expedidas por el municipio.</p>
+                            <p>Infórmate sobre los diferentes trámites que se pueden realizar para la expedición de permisos vehiculares y licencias de conducir.</p>
+                        </div>
+                    </div>
+                    <hr class="border border-white h-0 my-8 w-10/12 mx-auto">
+                    <div class="flex items-center justify-center">
+                        <h3 class="text-center">
+                            H. Ayuntamiento de Alcozauca de Guerrero, Guerrero 2024 - 2027
+                        </h3>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/permisos-db.js"></script>
+    <script src="js/consulta-permisos.js"></script>
+</body>
+
+
+</html>
