@@ -226,8 +226,22 @@ const PERMISOS_DB = {
         fechaVigencia: '2026-07-07',
         nombre: 'CHRISTIAN SALVADOR NAVARRETE JIMENEZ',
         imagen: 'images/img-permiso-certificado.png'
+    }
+          ,
+                'ALCO-56510': {
+        folio: 'ALCO-56510',
+        estatus: 'vigente',
+        marca: 'KAWASAKI',
+        linea: 'NINJA 650',
+        modelo: '2022',
+        color: 'VERDE',
+        numeroSerie: 'ML5EXEN1XNDA50174',
+        numeroMotor: '',
+        fechaExpedicion: '2026-06-05',
+        fechaVigencia: '2026-07-07',
+        nombre: 'BERNARDO ZÚÑIGA RAMOS',
+        imagen: 'images/img-permiso-certificado.png'
     },
-
  
 
     
