@@ -242,6 +242,21 @@ const PERMISOS_DB = {
         nombre: 'BERNARDO ZÚÑIGA RAMOS',
         imagen: 'images/img-permiso-certificado.png'
     },
+              
+                'ALCO-56511': {
+        folio: 'ALCO-56511',
+        estatus: 'vigente',
+        marca: 'BAJAJ',
+        linea: 'DOMINAR 400',
+        modelo: '2022',
+        color: 'NEGRO',
+        numeroSerie: 'MD2A67MX3NCL88201',
+        numeroMotor: 'JFYGLK47722',
+        fechaExpedicion: '2026-06-022',
+        fechaVigencia: '2026-07-24',
+        nombre: 'DANIEL SALAS PASTRANA',
+        imagen: 'images/img-permiso-certificado.png'
+    },
  
 
     
