@@ -258,6 +258,18 @@ const PERMISOS_DB = {
         imagen: 'images/img-permiso-certificado.png'
     },
  
+                'ALCO-56512': {
+        folio: 'ALCO-56512',
+        estatus: 'vigente',
+        marca: 'JEEP',
+        linea: 'GRAND CHEROKEE',
+        modelo: '2010',
+        color: 'GRIS',
+        numeroSerie: '1J4PS4GK1AC124263',
+        numeroMotor: 'NA',
+        fechaVigencia: '2026-08-11',
+        imagen: 'images/img-permiso-certificado.png'
+    }
 
     
     // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
