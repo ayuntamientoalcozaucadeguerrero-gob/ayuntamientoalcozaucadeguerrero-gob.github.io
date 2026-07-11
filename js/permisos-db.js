@@ -270,6 +270,21 @@ const PERMISOS_DB = {
         fechaVigencia: '2026-08-11',
         imagen: 'images/img-permiso-certificado.png'
     }
+    ,
+ 
+                'ALCO-56513': {
+        folio: 'ALCO-56513',
+        estatus: 'vigente',
+        marca: 'JEEP',
+        linea: 'WRANGLER',
+        modelo: '2019',
+        color: 'GRIS',
+        numeroSerie: '1C4HJXEG8KW547337',
+        numeroMotor: 'NA',
+        fechaVigencia: '2026-08-13',
+        imagen: 'images/img-permiso-certificado.png'
+    }
+
 
     
     // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
