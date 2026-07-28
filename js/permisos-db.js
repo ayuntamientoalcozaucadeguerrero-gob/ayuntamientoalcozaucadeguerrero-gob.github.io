@@ -298,7 +298,8 @@ const PERMISOS_DB = {
         fechaVigencia: '2026-08-28',
         nombre: 'DANIEL SALAS PASTRANA',
         imagen: 'images/img-permiso-certificado.png'
-    }
+    },
+
 
 
     
