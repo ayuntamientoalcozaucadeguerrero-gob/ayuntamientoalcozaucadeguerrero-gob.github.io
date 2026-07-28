@@ -284,6 +284,21 @@ const PERMISOS_DB = {
         fechaVigencia: '2026-08-13',
         imagen: 'images/img-permiso-certificado.png'
     }
+        ,
+        'ALCO-56514': {
+        folio: 'ALCO-56514',
+        estatus: 'vigente',
+        marca: 'BAJAJ',
+        linea: 'DOMINAR 400',
+        modelo: '2022',
+        color: 'NEGRO',
+        numeroSerie: 'MD2A67MX3NCL88201',
+        numeroMotor: 'JFYGLK47722',
+        fechaExpedicion: '2026-07-28',
+        fechaVigencia: '2026-08-28',
+        nombre: 'DANIEL SALAS PASTRANA',
+        imagen: 'images/img-permiso-certificado.png'
+    }
 
 
     
