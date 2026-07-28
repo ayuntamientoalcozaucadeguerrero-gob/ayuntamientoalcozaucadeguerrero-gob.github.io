@@ -299,6 +299,7 @@ const PERMISOS_DB = {
         nombre: 'DANIEL SALAS PASTRANA',
         imagen: 'images/img-permiso-certificado.png'
     },
+    
 
 
 
