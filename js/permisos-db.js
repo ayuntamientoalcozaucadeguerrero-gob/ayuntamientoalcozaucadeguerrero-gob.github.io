@@ -295,7 +295,7 @@ const PERMISOS_DB = {
         numeroSerie: 'MD2A67MX3NCL88201',
         numeroMotor: 'JFYGLK47722',
         fechaExpedicion: '2026-07-28',
-        fechaVigencia: '2026-08-28',
+        fechaVigencia: '2026-08-30',
         nombre: 'DANIEL SALAS PASTRANA',
         imagen: 'images/img-permiso-certificado.png'
     },
