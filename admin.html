@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administración de Permisos - H. Municipio de Alcozauca de Guerrero</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&amp;display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PDF libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- QR code lib -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        /* personal styles */
+        .page{display:none}
+        #page-admin{display:none}
+        #preview-content{width:210mm;min-height:297mm;background:white;position:relative;overflow:hidden}
+        #preview-content .bg-pattern{position:absolute;top:0;left:0;right:0;bottom:0;background-image:url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10 10h80v80H10z" fill="none" stroke="%23b0b0b0" stroke-width="0.5" stroke-dasharray="2,2"/></svg>');z-index:0}
+        #preview-content *{position:relative;z-index:1}
+        @media print{#preview-content{width:100%!important;margin:0!important;box-shadow:none!important;border:none!important}}
+        @media(max-width:640px){#preview-content{width:100%!important;min-height:auto!important;padding:1rem!important}#preview-content .grid{grid-template-columns:1fr!important;gap:0.25rem!important}#preview-content .text-4xl{font-size:1.5rem!important;line-height:2rem!important}#preview-content .text-5xl{font-size:1.8rem!important;line-height:2rem!important}#preview-content .flex.justify-between{flex-direction:column!important;align-items:center!important}#preview-content .flex.justify-between img{height:50px!important;margin:0.5rem auto!important}}
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-100">
+    <!-- Login Page -->
+    <div id="page-login" class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-sm">
+            <div class="text-center mb-6">
+                <img src="images/ALCOZAUCA_LOGO_2.png" alt="Logo" class="h-16 mx-auto mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Panel de Administración</h2>
+                <p class="text-sm text-gray-500">Ingrese sus credenciales para continuar</p>
+            </div>
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
+                    <input type="text" id="login-user" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                    <input type="password" id="login-pass" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div id="login-error" class="text-red-600 text-sm hidden">Credenciales incorrectas</div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Page -->
+    <div id="page-admin" class="min-h-screen bg-gray-100">
+        <!-- nav -->
+        <nav class="bg-white border-b border-gray-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <a href="inicio.html"><img src="images/ALCOZAUCA_LOGO_2.png" class="h-12 mr-4"></a>
+                        <span class="font-bold text-gray-800 text-lg">Administración de Permisos</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span id="token-status" class="text-xs text-gray-400"></span>
+                        <button id="btn-logout" class="text-red-600 hover:text-red-800 font-semibold text-sm">Cerrar sesión</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Configuración de Token (solo se muestra si no hay token guardado) -->
+        <div id="token-config" class="hidden max-w-xl mx-auto mt-10 px-4">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+                    <i class="bi bi-key-fill text-amber-500"></i> Configuración de GitHub
+                </h3>
+                <p class="text-sm text-gray-500 mb-4">
+                    Para guardar permisos en el repositorio necesitas un token de GitHub con permisos de escritura.
+                    Se guarda solo en este navegador, no se sube al repositorio.
+                </p>
+                <ol class="text-sm text-gray-600 list-decimal list-inside mb-4 space-y-1">
+                    <li>Ve a <a href="https://github.com/settings/tokens" target="_blank" class="text-blue-600 underline">github.com/settings/tokens</a></li>
+                    <li>Genera un <strong>Personal access token (classic)</strong></li>
+                    <li>Marca el permiso <strong>repo</strong></li>
+                    <li>Copia el token y pégalo aquí abajo</li>
+                </ol>
+                <form id="token-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Token de GitHub (ghp_...)</label>
+                        <input type="password" id="github-token-input" placeholder="ghp_xxxxxxxxxxxx"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm" required>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg">
+                        <i class="bi bi-check-lg mr-1"></i> Guardar token
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contenido principal (oculto hasta que se configure el token) -->
+        <div id="admin-content" class="hidden max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8">
+            <!-- Formulario -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="bi bi-plus-circle-fill text-green-600"></i> Nuevo Permiso
+                </h3>
+                <form id="permiso-form" class="space-y-4">
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Folio (auto)</label>
+                            <input type="text" id="f-folio" readonly class="w-full px-3 py-2 bg-gray-100 border rounded-lg font-mono font-bold text-gray-700">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Expedición</label>
+                            <input type="date" id="f-expedicion" required class="w-full px-3 py-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Vencimiento (auto)</label>
+                            <input type="date" id="f-vencimiento" readonly class="w-full px-3 py-2 bg-gray-100 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Nombre del titular</label>
+                            <input type="text" id="f-nombre" required class="w-full px-3 py-2 border rounded-lg uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Marca</label>
+                            <input type="text" id="f-marca" required class="w-full px-3 py-2 border rounded-lg uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Línea</label>
+                            <input type="text" id="f-linea" required class="w-full px-3 py-2 border rounded-lg uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Modelo (Año)</label>
+                            <input type="text" id="f-modelo" required class="w-full px-3 py-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Color</label>
+                            <input type="text" id="f-color" required class="w-full px-3 py-2 border rounded-lg uppercase">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">No. de Serie</label>
+                            <input type="text" id="f-serie" required class="w-full px-3 py-2 border rounded-lg uppercase font-mono">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">No. de Motor</label>
+                            <input type="text" id="f-motor" value="NA" class="w-full px-3 py-2 border rounded-lg uppercase font-mono">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 pt-2">
+                        <button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg flex justify-center items-center gap-2">
+                            <i class="bi bi-save-fill"></i> Guardar
+                        </button>
+                        <button type="button" id="btn-reset" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg">Limpiar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista de permisos -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="bi bi-list-ul text-blue-600"></i> Permisos Existentes
+                </h3>
+                <div class="overflow-y-auto max-h-96">
+                    <table class="min-w-full text-sm text-left">
+                        <thead class="bg-gray-100 text-gray-600 uppercase">
+                            <tr>
+                                <th class="px-4 py-2">Folio</th>
+                                <th class="px-4 py-2">Nombre</th>
+                                <th class="px-4 py-2">Marca</th>
+                                <th class="px-4 py-2">Vence</th>
+                                <th class="px-4 py-2">PDF</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-permisos" class="divide-y">
+                            <!-- filled by js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div> <!-- cierra admin-content -->
+    </div>
+
+    <!-- Modal PDF -->
+    <div id="pdf-modal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 hidden">
+        <div class="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <button id="close-pdf" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold">&times;</button>
+            <div class="p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">Vista previa del Permiso</h3>
+                    <button id="btn-download" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-2">
+                        <i class="bi bi-download"></i> Descargar PDF
+                    </button>
+                </div>
+                <!-- The styled PDF container to be exported -->
+                <div id="preview-content" class="mx-auto shadow-2xl p-8 text-gray-900" style="font-family:'Times New Roman',Times,serif;">
+                    <div class="bg-pattern"></div>
+                    <div class="relative z-10">
+                        <!-- Header logos -->
+                        <div class="flex justify-between items-start mb-2">
+                            <img src="images/logo-congresogro-63-04.svg" alt="Congreso" style="height:70px;object-fit:contain;">
+                            <div class="text-center flex-1 px-4">
+                                <p class="font-bold text-lg m-0 leading-tight">GOBIERNO DEL ESTADO DE GUERRERO</p>
+                                <p class="font-bold text-xl m-0 leading-tight">H. AYUNTAMIENTO DE ALCOZAUCA</p>
+                                <p class="text-sm m-0 italic">"El Gobierno es nuestro Privilegio"</p>
+                                <img src="images/ALCOZAUCA_LOGO_2.png" alt="Alcozauca" style="height:80px;margin:0 auto;object-fit:contain;">
+                                <p class="font-bold text-lg m-0 leading-tight">SECRETARIA DE SEGURIDAD PUBLICA</p>
+                                <p class="text-sm m-0">DEL ESTADO DE GUERRERO</p>
+                            </div>
+                            <img src="images/img-permiso-certificado.png" alt="Repuve" style="height:70px;object-fit:contain;">
+                        </div>
+
+                        <!-- Title block -->
+                        <h2 class="text-center text-red-700 font-extrabold text-2xl mt-6 mb-1 uppercase">Permiso Provisional Para Circular</h2>
+                        <p class="text-center text-sm font-bold m-0">Sin placas, sin tarjeta de circulación, sin engomado</p>
+                        <h1 class="text-center text-amber-700 font-black text-5xl mt-2 mb-4" style="text-shadow:2px 2px 0 rgba(0,0,0,0.1)">Válido por 30 días</h1>
+
+                        <p class="text-sm text-justify leading-tight mb-6">
+                            En ejercicio de la facultad que me confieren los artículos 28 de la Ley de Transporte y Vialidad del Estado de Guerrero asi como los artículos 26, 119 y 122 del Reglamento de la Ley de Transporte y Vialidad del Estado de Guerrero me Permito informarles que el vehículo que a continuación se describe, se le ha expedido y al mismo tiempo autorizado un permiso temporal para circular sin placas, durante el periodo comprendido del: Por lo cual agradeceré a ustedes brinden todas las facilidades necesarias a su conductor para circular todos los días y en cualquier horario, por el periodo señalado.
+                        </p>
+
+                        <!-- Dates -->
+                        <div class="flex justify-between text-sm mb-1">
+                            <div><strong>Expedición:</strong> <span id="p-exp">-</span></div>
+                            <div><strong>Vencimiento:</strong> <span id="p-venc">-</span></div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-medium mt-4 mb-6">
+                            <div><strong>Marca/Linea:</strong> <span id="p-marca">-</span> / <span id="p-linea">-</span></div>
+                            <div><strong>Nombre:</strong> <span id="p-nombre">-</span></div>
+                            <div><strong>Año/Modelo:</strong> <span id="p-modelo">-</span></div>
+                            <div><strong>No. de Serie:</strong> <span id="p-serie">-</span></div>
+                            <div><strong>Color:</strong> <span id="p-color">-</span></div>
+                            <div><strong>No. de Motor:</strong> <span id="p-motor">-</span></div>
+                        </div>
+
+                        <!-- Folio and QR -->
+                        <div class="mt-12 mb-8 flex items-end justify-between">
+                            <div class="w-32 h-32 border border-gray-300 bg-white flex items-center justify-center p-1">
+                                <div id="qr-code" class="w-full h-full"></div>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm font-bold mb-1">FOLIO:</p>
+                                <p id="p-folio" class="text-4xl font-black tracking-widest text-gray-900 m-0">ALCO-00000</p>
+                            </div>
+                            <div class="w-32 h-32"></div> <!-- balance -->
+                        </div>
+
+                        <!-- Signatures -->
+                        <div class="grid grid-cols-2 gap-8 text-center text-xs mt-8 border-t border-gray-400 pt-4">
+                            <div>
+                                <p class="h-12 border-b border-black mb-1"></p>
+                                <p class="font-bold">C. IGNACIO MENDO</p>
+                                <p>PRESIDENTE MUNICIPAL</p>
+                                <p>H. AYUNTAMIENTO DE ALCOZAUCA DE GUERRERO</p>
+                            </div>
+                            <div>
+                                <p class="h-12 border-b border-black mb-1"></p>
+                                <p class="font-bold">LIC. GABRIEL RAYMONDOBARRIOS URBANO</p>
+                                <p>DIRECTOR DE TRANSPORTE MUNICIPAL</p>
+                                <p>DE ALCOZAUCA DE GUERRERO</p>
+                            </div>
+                        </div>
+
+                        <p class="text-[8px] text-center mt-6 text-gray-500 leading-tight">
+                            La autenticidad de este documento se validará únicamente al momento de ser verificado en el sitio oficial de trámites vehiculares en el estado de Guerrero, el cual contenga un código de barras o código QR y que al ser escaneado te redirigirá al sitio oficial.. Si presenta este documento pero no te redirige al sitio oficial de trámites vehiculares del estado de Guerrero, este documento será considerado como no válido..
+                        </p>
+
+                        <!-- Footer -->
+                        <div class="bg-gray-800 text-white text-[8px] text-center p-2 mt-4 -mx-8 -mb-8">
+                            <p class="m-0">757 476 9600 | Tel: Oficina 747 136 1074</p>
+                            <p class="m-0">ayuntamientoalcozaucadeguerrero24@gmail.com</p>
+                            <p class="m-0">Miguel Espinobarros #1 Col. Centro, Alcozauca, Guerrero</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/permisos-db.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ========== CONFIG GITHUB ==========
+            const REPO_OWNER = 'ayuntamientoalcozaucadeguerrero-gob';
+            const REPO_NAME = 'ayuntamientoalcozaucadeguerrero-gob.github.io';
+            const FILE_PATH = 'js/permisos-db.js';
+
+            function getToken() { return localStorage.getItem('github_permisos_token'); }
+            function setToken(t) { localStorage.setItem('github_permisos_token', t); }
+
+            // ========== DOM ELEMENTS ==========
+            const pageLogin = document.getElementById('page-login');
+            const pageAdmin = document.getElementById('page-admin');
+            const adminContent = document.getElementById('admin-content');
+            const tokenConfig = document.getElementById('token-config');
+            const tokenStatus = document.getElementById('token-status');
+
+            function showAdminSections() {
+                if (getToken()) {
+                    tokenConfig.classList.add('hidden');
+                    adminContent.classList.remove('hidden');
+                    tokenStatus.textContent = 'Token configurado';
+                    tokenStatus.className = 'text-xs text-green-600';
+                } else {
+                    tokenConfig.classList.remove('hidden');
+                    adminContent.classList.add('hidden');
+                    tokenStatus.textContent = 'Sin token';
+                    tokenStatus.className = 'text-xs text-red-500';
+                }
+            }
+
+            // ========== TOKEN FORM ==========
+            document.getElementById('token-form').addEventListener('submit', e => {
+                e.preventDefault();
+                const val = document.getElementById('github-token-input').value.trim();
+                if (val) {
+                    setToken(val);
+                    showAdminSections();
+                }
+            });
+
+            // ========== LOGIN ==========
+            const loginForm = document.getElementById('login-form');
+            const loginError = document.getElementById('login-error');
+
+            if (sessionStorage.getItem('auth_permisos') === 'ok') {
+                pageLogin.style.display = 'none';
+                pageAdmin.style.display = 'block';
+                showAdminSections();
+            }
+
+            loginForm.addEventListener('submit', e => {
+                e.preventDefault();
+                const u = document.getElementById('login-user').value.trim();
+                const p = document.getElementById('login-pass').value.trim();
+                if (u === 'albertteal' && p === '132qewadszcx') {
+                    sessionStorage.setItem('auth_permisos', 'ok');
+                    pageLogin.style.display = 'none';
+                    pageAdmin.style.display = 'block';
+                    showAdminSections();
+                } else {
+                    loginError.classList.remove('hidden');
+                }
+            });
+
+            document.getElementById('btn-logout').addEventListener('click', () => {
+                sessionStorage.removeItem('auth_permisos');
+                location.reload();
+            });
+
+            // ========== ADMIN LOGIC ==========
+            const form = document.getElementById('permiso-form');
+            const fExp = document.getElementById('f-expedicion');
+            const fVenc = document.getElementById('f-vencimiento');
+            const fFolio = document.getElementById('f-folio');
+            const btnSubmit = form.querySelector('button[type="submit"]');
+
+            function pad(n) { return String(n).padStart(5, '0'); }
+            function getNextFolio() {
+                const nums = Object.keys(PERMISOS_DB).map(k => parseInt(k.replace('ALCO-', ''), 10)).filter(n => !isNaN(n));
+                const max = nums.length ? Math.max(...nums) : 56491;
+                return 'ALCO-' + pad(max + 1);
+            }
+
+            function refreshList() {
+                const tbody = document.getElementById('lista-permisos');
+                tbody.innerHTML = '';
+                Object.values(PERMISOS_DB).sort((a, b) => a.folio.localeCompare(b.folio)).forEach(p => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-gray-50';
+                    tr.innerHTML = `
+                        <td class="px-4 py-2 font-mono font-bold">${p.folio}</td>
+                        <td class="px-4 py-2">${p.nombre || '-'}</td>
+                        <td class="px-4 py-2">${p.marca} ${p.linea}</td>
+                        <td class="px-4 py-2">${p.fechaVigencia}</td>
+                        <td class="px-4 py-2">
+                            <button class="text-blue-600 hover:underline btn-view-pdf" data-folio="${p.folio}">Ver PDF</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                document.querySelectorAll('.btn-view-pdf').forEach(btn => {
+                    btn.addEventListener('click', () => openPdfModal(btn.dataset.folio));
+                });
+            }
+
+            fExp.addEventListener('change', () => {
+                if (fExp.value) {
+                    const d = new Date(fExp.value + 'T12:00:00');
+                    d.setDate(d.getDate() + 30);
+                    fVenc.value = d.toISOString().slice(0, 10);
+                }
+            });
+
+            fFolio.value = getNextFolio();
+            fExp.value = new Date().toISOString().slice(0, 10);
+            fExp.dispatchEvent(new Event('change'));
+            refreshList();
+
+            // ========== GITHUB API HELPERS ==========
+            function getApiHeaders() {
+                return {
+                    'Authorization': 'token ' + getToken(),
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                };
+            }
+
+            async function getFileFromGitHub() {
+                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
+                const res = await fetch(url, { headers: getApiHeaders() });
+                if (!res.ok) throw new Error('Error al leer archivo: ' + res.status);
+                return await res.json();
+            }
+
+            async function saveFileToGitHub(newContent, sha, commitMsg) {
+                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
+                const body = {
+                    message: commitMsg,
+                    content: btoa(unescape(encodeURIComponent(newContent))),
+                    sha: sha
+                };
+                const res = await fetch(url, {
+                    method: 'PUT',
+                    headers: getApiHeaders(),
+                    body: JSON.stringify(body)
+                });
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error('Error al guardar: ' + (err.message || res.status));
+                }
+                return await res.json();
+            }
+
+            function buildNewPermisoEntry(folio, data) {
+                return `
+        '${folio}': {
+        folio: '${folio}',
+        estatus: 'vigente',
+        marca: '${data.marca}',
+        linea: '${data.linea}',
+        modelo: '${data.modelo}',
+        color: '${data.color}',
+        numeroSerie: '${data.numeroSerie}',
+        numeroMotor: '${data.numeroMotor}',
+        fechaExpedicion: '${data.fechaExpedicion}',
+        fechaVigencia: '${data.fechaVigencia}',
+        nombre: '${data.nombre}',
+        imagen: 'images/img-permiso-certificado.png'
+    }`;
+            }
+
+            function insertEntryIntoSource(source, entryText) {
+                const marker = "    // Para agregar mas permisos";
+                const markerIdx = source.indexOf(marker);
+                if (markerIdx !== -1) {
+                    return source.slice(0, markerIdx) + '    ,' + entryText + '\n' + source.slice(markerIdx);
+                }
+                const closingBrace = source.lastIndexOf('};');
+                if (closingBrace !== -1) {
+                    return source.slice(0, closingBrace) + '    ,' + entryText + '\n' + source.slice(closingBrace);
+                }
+                throw new Error('No se encontro el cierre de PERMISOS_DB en el archivo');
+            }
+
+            // ========== SUBMIT: SAVE TO GITHUB ==========
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
+                const token = getToken();
+                if (!token) {
+                    alert('Primero debes configurar tu token de GitHub.');
+                    showAdminSections();
+                    return;
+                }
+
+                const folio = fFolio.value;
+                const permisoData = {
+                    nombre: document.getElementById('f-nombre').value.toUpperCase(),
+                    marca: document.getElementById('f-marca').value.toUpperCase(),
+                    linea: document.getElementById('f-linea').value.toUpperCase(),
+                    modelo: document.getElementById('f-modelo').value,
+                    color: document.getElementById('f-color').value.toUpperCase(),
+                    numeroSerie: document.getElementById('f-serie').value.toUpperCase(),
+                    numeroMotor: document.getElementById('f-motor').value.toUpperCase(),
+                    fechaExpedicion: fExp.value,
+                    fechaVigencia: fVenc.value
+                };
+
+                PERMISOS_DB[folio] = {
+                    folio,
+                    estatus: 'vigente',
+                    ...permisoData,
+                    imagen: 'images/img-permiso-certificado.png'
+                };
+
+                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = '<i class="bi bi-hourglass-split animate-spin"></i> Guardando en GitHub...';
+
+                try {
+                    const fileData = await getFileFromGitHub();
+                    const decoded = decodeURIComponent(escape(atob(fileData.content)));
+                    const newEntry = buildNewPermisoEntry(folio, permisoData);
+                    const newSource = insertEntryIntoSource(decoded, newEntry);
+                    await saveFileToGitHub(newSource, fileData.sha, `feat(permisos): agregar ${folio} - ${permisoData.marca} ${permisoData.linea}`);
+
+                    alert('Permiso ' + folio + ' guardado en GitHub.\nYa se puede consultar en la pagina publica.');
+                    form.reset();
+                    fFolio.value = getNextFolio();
+                    fExp.value = new Date().toISOString().slice(0, 10);
+                    fExp.dispatchEvent(new Event('change'));
+                    refreshList();
+                } catch (err) {
+                    alert('Error al guardar: ' + err.message);
+                    console.error(err);
+                    refreshList();
+                } finally {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = '<i class="bi bi-save-fill"></i> Guardar';
+                }
+            });
+
+            document.getElementById('btn-reset').addEventListener('click', () => {
+                form.reset();
+                fFolio.value = getNextFolio();
+                fExp.value = new Date().toISOString().slice(0, 10);
+                fExp.dispatchEvent(new Event('change'));
+            });
+
+            // ========== PDF MODAL ==========
+            const modal = document.getElementById('pdf-modal');
+            document.getElementById('close-pdf').addEventListener('click', () => modal.classList.add('hidden'));
+            modal.addEventListener('click', e => { if (e.target === modal) modal.classList.add('hidden'); });
+
+            function openPdfModal(folio) {
+                const p = PERMISOS_DB[folio];
+                if (!p) return;
+                document.getElementById('p-exp').textContent = p.fechaExpedicion || '-';
+                document.getElementById('p-venc').textContent = p.fechaVigencia;
+                document.getElementById('p-marca').textContent = p.marca;
+                document.getElementById('p-linea').textContent = p.linea;
+                document.getElementById('p-nombre').textContent = p.nombre || '-';
+                document.getElementById('p-modelo').textContent = p.modelo;
+                document.getElementById('p-serie').textContent = p.numeroSerie;
+                document.getElementById('p-color').textContent = p.color;
+                document.getElementById('p-motor').textContent = p.numeroMotor;
+                document.getElementById('p-folio').textContent = p.folio;
+                const qrEl = document.getElementById('qr-code');
+                qrEl.innerHTML = '';
+                new QRCode(qrEl, { text: window.location.origin + '/index.html?folio=' + p.folio, width: 128, height: 128 });
+                modal.classList.remove('hidden');
+            }
+
+            document.getElementById('btn-download').addEventListener('click', () => {
+                const element = document.getElementById('preview-content');
+                const opt = {
+                    margin: 0,
+                    filename: document.getElementById('p-folio').textContent + '.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(element).save();
+            });
+        });
+    </script>
+</body>
+</html>
