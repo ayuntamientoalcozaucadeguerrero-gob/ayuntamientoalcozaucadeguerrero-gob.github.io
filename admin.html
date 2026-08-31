@@ -20,11 +20,9 @@
         /* personal styles */
         .page{display:none}
         #page-admin{display:none}
-        #preview-content{width:210mm;min-height:297mm;background:white;position:relative;overflow:hidden}
-        #preview-content .bg-pattern{position:absolute;top:0;left:0;right:0;bottom:0;background-image:url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10 10h80v80H10z" fill="none" stroke="%23b0b0b0" stroke-width="0.5" stroke-dasharray="2,2"/></svg>');z-index:0}
-        #preview-content *{position:relative;z-index:1}
-        @media print{#preview-content{width:100%!important;margin:0!important;box-shadow:none!important;border:none!important}}
-        @media(max-width:640px){#preview-content{width:100%!important;min-height:auto!important;padding:1rem!important}#preview-content .grid{grid-template-columns:1fr!important;gap:0.25rem!important}#preview-content .text-4xl{font-size:1.5rem!important;line-height:2rem!important}#preview-content .text-5xl{font-size:1.8rem!important;line-height:2rem!important}#preview-content .flex.justify-between{flex-direction:column!important;align-items:center!important}#preview-content .flex.justify-between img{height:50px!important;margin:0.5rem auto!important}}
+        #preview-content{width:210mm;height:297mm;background:white;position:relative;overflow:hidden}
+        @media print{#preview-content{width:100%!important;height:auto!important;margin:0!important;box-shadow:none!important;border:none!important}}
+        @media(max-width:640px){#preview-content{width:100%!important;height:auto!important;aspect-ratio:210/297}}
     </style>
 </head>
 <body class="font-sans antialiased bg-gray-100">
@@ -196,84 +194,56 @@
                     </button>
                 </div>
                 <!-- The styled PDF container to be exported -->
-                <div id="preview-content" class="mx-auto shadow-2xl p-8 text-gray-900" style="font-family:'Times New Roman',Times,serif;">
-                    <div class="bg-pattern"></div>
-                    <div class="relative z-10">
-                        <!-- Header logos -->
-                        <div class="flex justify-between items-start mb-2">
-                            <img src="images/logo-congresogro-63-04.svg" alt="Congreso" style="height:70px;object-fit:contain;">
-                            <div class="text-center flex-1 px-4">
-                                <p class="font-bold text-lg m-0 leading-tight">GOBIERNO DEL ESTADO DE GUERRERO</p>
-                                <p class="font-bold text-xl m-0 leading-tight">H. AYUNTAMIENTO DE ALCOZAUCA</p>
-                                <p class="text-sm m-0 italic">"El Gobierno es nuestro Privilegio"</p>
-                                <img src="images/ALCOZAUCA_LOGO_2.png" alt="Alcozauca" style="height:80px;margin:0 auto;object-fit:contain;">
-                                <p class="font-bold text-lg m-0 leading-tight">SECRETARIA DE SEGURIDAD PUBLICA</p>
-                                <p class="text-sm m-0">DEL ESTADO DE GUERRERO</p>
-                            </div>
-                            <img src="images/img-permiso-certificado.png" alt="Repuve" style="height:70px;object-fit:contain;">
+                <div id="preview-content" class="mx-auto shadow-2xl" style="position:relative;width:210mm;height:297mm;overflow:hidden;background:white;">
+                    <!-- Plantilla como fondo -->
+                    <img src="images/plantilla.png" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;" crossorigin="anonymous">
+                    <!-- Capa de texto superpuesto -->
+                    <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;font-family:'Times New Roman',Times,serif;color:#000;">
+                        
+                        <!-- EXPEDICIÓN -->
+                        <div style="position:absolute;top:41.5%;left:14%;font-size:11px;font-weight:bold;">
+                            <span id="p-exp">-</span>
+                        </div>
+                        <!-- VENCIMIENTO -->
+                        <div style="position:absolute;top:41.5%;left:54%;font-size:11px;font-weight:bold;">
+                            <span id="p-venc">-</span>
                         </div>
 
-                        <!-- Title block -->
-                        <h2 class="text-center text-red-700 font-extrabold text-2xl mt-6 mb-1 uppercase">Permiso Provisional Para Circular</h2>
-                        <p class="text-center text-sm font-bold m-0">Sin placas, sin tarjeta de circulación, sin engomado</p>
-                        <h1 class="text-center text-amber-700 font-black text-5xl mt-2 mb-4" style="text-shadow:2px 2px 0 rgba(0,0,0,0.1)">Válido por 30 días</h1>
-
-                        <p class="text-sm text-justify leading-tight mb-6">
-                            En ejercicio de la facultad que me confieren los artículos 28 de la Ley de Transporte y Vialidad del Estado de Guerrero asi como los artículos 26, 119 y 122 del Reglamento de la Ley de Transporte y Vialidad del Estado de Guerrero me Permito informarles que el vehículo que a continuación se describe, se le ha expedido y al mismo tiempo autorizado un permiso temporal para circular sin placas, durante el periodo comprendido del: Por lo cual agradeceré a ustedes brinden todas las facilidades necesarias a su conductor para circular todos los días y en cualquier horario, por el periodo señalado.
-                        </p>
-
-                        <!-- Dates -->
-                        <div class="flex justify-between text-sm mb-1">
-                            <div><strong>Expedición:</strong> <span id="p-exp">-</span></div>
-                            <div><strong>Vencimiento:</strong> <span id="p-venc">-</span></div>
+                        <!-- MARCA/LINEA -->
+                        <div style="position:absolute;top:47%;left:14%;font-size:11px;font-weight:bold;">
+                            <span id="p-marca-linea">- / -</span>
+                        </div>
+                        <!-- NOMBRE -->
+                        <div style="position:absolute;top:47%;left:54%;font-size:11px;font-weight:bold;">
+                            <span id="p-nombre">-</span>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm font-medium mt-4 mb-6">
-                            <div><strong>Marca/Linea:</strong> <span id="p-marca">-</span> / <span id="p-linea">-</span></div>
-                            <div><strong>Nombre:</strong> <span id="p-nombre">-</span></div>
-                            <div><strong>Año/Modelo:</strong> <span id="p-modelo">-</span></div>
-                            <div><strong>No. de Serie:</strong> <span id="p-serie">-</span></div>
-                            <div><strong>Color:</strong> <span id="p-color">-</span></div>
-                            <div><strong>No. de Motor:</strong> <span id="p-motor">-</span></div>
+                        <!-- AÑO/MODELO -->
+                        <div style="position:absolute;top:52%;left:14%;font-size:11px;font-weight:bold;">
+                            <span id="p-modelo">-</span>
+                        </div>
+                        <!-- No. DE SERIE -->
+                        <div style="position:absolute;top:52%;left:54%;font-size:11px;font-weight:bold;">
+                            <span id="p-serie">-</span>
                         </div>
 
-                        <!-- Folio and QR -->
-                        <div class="mt-12 mb-8 flex items-end justify-between">
-                            <div class="w-32 h-32 border border-gray-300 bg-white flex items-center justify-center p-1">
-                                <div id="qr-code" class="w-full h-full"></div>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-sm font-bold mb-1">FOLIO:</p>
-                                <p id="p-folio" class="text-4xl font-black tracking-widest text-gray-900 m-0">ALCO-00000</p>
-                            </div>
-                            <div class="w-32 h-32"></div> <!-- balance -->
+                        <!-- COLOR -->
+                        <div style="position:absolute;top:57%;left:14%;font-size:11px;font-weight:bold;">
+                            <span id="p-color">-</span>
+                        </div>
+                        <!-- No. DE MOTOR -->
+                        <div style="position:absolute;top:57%;left:54%;font-size:11px;font-weight:bold;">
+                            <span id="p-motor">-</span>
                         </div>
 
-                        <!-- Signatures -->
-                        <div class="grid grid-cols-2 gap-8 text-center text-xs mt-8 border-t border-gray-400 pt-4">
-                            <div>
-                                <p class="h-12 border-b border-black mb-1"></p>
-                                <p class="font-bold">C. IGNACIO MENDO</p>
-                                <p>PRESIDENTE MUNICIPAL</p>
-                                <p>H. AYUNTAMIENTO DE ALCOZAUCA DE GUERRERO</p>
-                            </div>
-                            <div>
-                                <p class="h-12 border-b border-black mb-1"></p>
-                                <p class="font-bold">LIC. GABRIEL RAYMONDOBARRIOS URBANO</p>
-                                <p>DIRECTOR DE TRANSPORTE MUNICIPAL</p>
-                                <p>DE ALCOZAUCA DE GUERRERO</p>
-                            </div>
+                        <!-- QR DE VERIFICACIÓN -->
+                        <div style="position:absolute;top:63%;left:4%;width:100px;height:100px;">
+                            <div id="qr-code" style="width:100%;height:100%;"></div>
                         </div>
 
-                        <p class="text-[8px] text-center mt-6 text-gray-500 leading-tight">
-                            La autenticidad de este documento se validará únicamente al momento de ser verificado en el sitio oficial de trámites vehiculares en el estado de Guerrero, el cual contenga un código de barras o código QR y que al ser escaneado te redirigirá al sitio oficial.. Si presenta este documento pero no te redirige al sitio oficial de trámites vehiculares del estado de Guerrero, este documento será considerado como no válido..
-                        </p>
-
-                        <!-- Footer -->
-                        <div class="bg-gray-800 text-white text-[8px] text-center p-2 mt-4 -mx-8 -mb-8">
-                            <p class="m-0">757 476 9600 | Tel: Oficina 747 136 1074</p>
-                            <p class="m-0">ayuntamientoalcozaucadeguerrero24@gmail.com</p>
-                            <p class="m-0">Miguel Espinobarros #1 Col. Centro, Alcozauca, Guerrero</p>
+                        <!-- FOLIO -->
+                        <div style="position:absolute;top:67%;left:0;right:0;text-align:center;">
+                            <p id="p-folio" style="font-size:36px;font-weight:900;letter-spacing:3px;color:#1a1a1a;margin:0;font-family:Arial,Helvetica,sans-serif;">ALCO-00000</p>
                         </div>
                     </div>
                 </div>
@@ -541,8 +511,7 @@
                 if (!p) return;
                 document.getElementById('p-exp').textContent = p.fechaExpedicion || '-';
                 document.getElementById('p-venc').textContent = p.fechaVigencia;
-                document.getElementById('p-marca').textContent = p.marca;
-                document.getElementById('p-linea').textContent = p.linea;
+                document.getElementById('p-marca-linea').textContent = p.marca + ' / ' + p.linea;
                 document.getElementById('p-nombre').textContent = p.nombre || '-';
                 document.getElementById('p-modelo').textContent = p.modelo;
                 document.getElementById('p-serie').textContent = p.numeroSerie;
@@ -551,7 +520,7 @@
                 document.getElementById('p-folio').textContent = p.folio;
                 const qrEl = document.getElementById('qr-code');
                 qrEl.innerHTML = '';
-                new QRCode(qrEl, { text: window.location.origin + '/index.html?folio=' + p.folio, width: 128, height: 128 });
+                new QRCode(qrEl, { text: window.location.origin + '/index.html?folio=' + p.folio, width: 100, height: 100 });
                 modal.classList.remove('hidden');
             }
 
