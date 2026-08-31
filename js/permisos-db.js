@@ -304,6 +304,21 @@ const PERMISOS_DB = {
 
 
     
+    ,
+        'ALCO-56515': {
+        folio: 'ALCO-56515',
+        estatus: 'vigente',
+        marca: 'BAJAJ',
+        linea: 'DOMINAR 400',
+        modelo: '2022',
+        color: 'NEGRO',
+        numeroSerie: 'MD2A67MX3NCL88201',
+        numeroMotor: 'JFYGLK47722',
+        fechaExpedicion: '2026-08-31',
+        fechaVigencia: '2026-09-30',
+        nombre: 'DANIEL SALAS PASTRANA',
+        imagen: 'images/img-permiso-certificado.png'
+    }
     // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
     // y crea un nuevo objeto siguiendo el mismo formato:
     // 'ALCO-XXXXX': {
