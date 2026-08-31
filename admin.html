@@ -196,54 +196,38 @@
                 <!-- The styled PDF container to be exported -->
                 <div id="preview-content" class="mx-auto shadow-2xl" style="position:relative;width:210mm;height:297mm;overflow:hidden;background:white;">
                     <!-- Plantilla como fondo -->
-                    <img src="images/plantilla.png" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;" crossorigin="anonymous">
+                    <img src="images/plantilla.png" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill;z-index:0;" crossorigin="anonymous">
                     <!-- Capa de texto superpuesto -->
-                    <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;color:#000;font-family:'Georgia','Times New Roman',Times,serif;">
+                    <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;color:#000;font-family:Georgia,'Times New Roman',serif;font-size:10px;font-weight:700;">
                         
                         <!-- EXPEDICIÓN -->
-                        <div style="position:absolute;top:43.2%;left:15.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
-                            <span id="p-exp">-</span>
-                        </div>
+                        <span style="position:absolute;top:43%;left:14.5%;"><span id="p-exp">-</span></span>
                         <!-- VENCIMIENTO -->
-                        <div style="position:absolute;top:43.2%;left:55.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
-                            <span id="p-venc">-</span>
-                        </div>
+                        <span style="position:absolute;top:43%;left:55%;"><span id="p-venc">-</span></span>
 
                         <!-- MARCA/LINEA -->
-                        <div style="position:absolute;top:48.2%;left:15.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
-                            <span id="p-marca-linea">- / -</span>
-                        </div>
+                        <span style="position:absolute;top:48%;left:14.5%;"><span id="p-marca-linea">- / -</span></span>
                         <!-- NOMBRE -->
-                        <div style="position:absolute;top:48.2%;left:55.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
-                            <span id="p-nombre">-</span>
-                        </div>
+                        <span style="position:absolute;top:48%;left:55%;"><span id="p-nombre">-</span></span>
 
                         <!-- AÑO/MODELO -->
-                        <div style="position:absolute;top:53.2%;left:15.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
-                            <span id="p-modelo">-</span>
-                        </div>
+                        <span style="position:absolute;top:53%;left:14.5%;"><span id="p-modelo">-</span></span>
                         <!-- No. DE SERIE -->
-                        <div style="position:absolute;top:53.2%;left:55.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
-                            <span id="p-serie">-</span>
-                        </div>
+                        <span style="position:absolute;top:53%;left:55%;"><span id="p-serie">-</span></span>
 
                         <!-- COLOR -->
-                        <div style="position:absolute;top:58.2%;left:15.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
-                            <span id="p-color">-</span>
-                        </div>
+                        <span style="position:absolute;top:58%;left:14.5%;"><span id="p-color">-</span></span>
                         <!-- No. DE MOTOR -->
-                        <div style="position:absolute;top:58.2%;left:55.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
-                            <span id="p-motor">-</span>
-                        </div>
+                        <span style="position:absolute;top:58%;left:55%;"><span id="p-motor">-</span></span>
 
                         <!-- QR DE VERIFICACIÓN -->
-                        <div style="position:absolute;top:63.5%;left:4%;width:120px;height:120px;">
+                        <div style="position:absolute;top:63.5%;left:3.5%;width:130px;height:130px;">
                             <div id="qr-code" style="width:100%;height:100%;"></div>
                         </div>
 
                         <!-- FOLIO -->
-                        <div style="position:absolute;top:68%;left:0;right:0;text-align:center;">
-                            <p id="p-folio" style="font-size:38px;font-weight:900;letter-spacing:4px;color:#1a1a1a;margin:0;font-family:Arial,Helvetica,sans-serif;">ALCO-00000</p>
+                        <div style="position:absolute;top:68.5%;left:0;right:0;text-align:center;">
+                            <p id="p-folio" style="font-size:40px;font-weight:900;letter-spacing:4px;color:#1a1a1a;margin:0;font-family:Arial,Helvetica,sans-serif;">ALCO-00000</p>
                         </div>
                     </div>
                 </div>
@@ -520,7 +504,7 @@
                 document.getElementById('p-folio').textContent = p.folio;
                 const qrEl = document.getElementById('qr-code');
                 qrEl.innerHTML = '';
-                new QRCode(qrEl, { text: window.location.origin + '/index.html?folio=' + p.folio, width: 120, height: 120 });
+                new QRCode(qrEl, { text: window.location.origin + '/index.html?folio=' + p.folio, width: 130, height: 130 });
                 modal.classList.remove('hidden');
             }
 
@@ -530,8 +514,9 @@
                     margin: 0,
                     filename: document.getElementById('p-folio').textContent + '.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true },
-                    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+                    html2canvas: { scale: 2, useCORS: true, width: 794, height: 1123, windowWidth: 794, windowHeight: 1123 },
+                    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all'] }
                 };
                 html2pdf().set(opt).from(element).save();
             });
