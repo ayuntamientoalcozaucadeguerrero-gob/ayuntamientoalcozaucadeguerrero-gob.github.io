@@ -198,52 +198,52 @@
                     <!-- Plantilla como fondo -->
                     <img src="images/plantilla.png" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;" crossorigin="anonymous">
                     <!-- Capa de texto superpuesto -->
-                    <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;font-family:'Times New Roman',Times,serif;color:#000;">
+                    <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;color:#000;font-family:'Georgia','Times New Roman',Times,serif;">
                         
                         <!-- EXPEDICIÓN -->
-                        <div style="position:absolute;top:41.5%;left:14%;font-size:11px;font-weight:bold;">
+                        <div style="position:absolute;top:43.2%;left:15.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
                             <span id="p-exp">-</span>
                         </div>
                         <!-- VENCIMIENTO -->
-                        <div style="position:absolute;top:41.5%;left:54%;font-size:11px;font-weight:bold;">
+                        <div style="position:absolute;top:43.2%;left:55.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
                             <span id="p-venc">-</span>
                         </div>
 
                         <!-- MARCA/LINEA -->
-                        <div style="position:absolute;top:47%;left:14%;font-size:11px;font-weight:bold;">
+                        <div style="position:absolute;top:48.2%;left:15.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
                             <span id="p-marca-linea">- / -</span>
                         </div>
                         <!-- NOMBRE -->
-                        <div style="position:absolute;top:47%;left:54%;font-size:11px;font-weight:bold;">
+                        <div style="position:absolute;top:48.2%;left:55.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
                             <span id="p-nombre">-</span>
                         </div>
 
                         <!-- AÑO/MODELO -->
-                        <div style="position:absolute;top:52%;left:14%;font-size:11px;font-weight:bold;">
+                        <div style="position:absolute;top:53.2%;left:15.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
                             <span id="p-modelo">-</span>
                         </div>
                         <!-- No. DE SERIE -->
-                        <div style="position:absolute;top:52%;left:54%;font-size:11px;font-weight:bold;">
+                        <div style="position:absolute;top:53.2%;left:55.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
                             <span id="p-serie">-</span>
                         </div>
 
                         <!-- COLOR -->
-                        <div style="position:absolute;top:57%;left:14%;font-size:11px;font-weight:bold;">
+                        <div style="position:absolute;top:58.2%;left:15.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
                             <span id="p-color">-</span>
                         </div>
                         <!-- No. DE MOTOR -->
-                        <div style="position:absolute;top:57%;left:54%;font-size:11px;font-weight:bold;">
+                        <div style="position:absolute;top:58.2%;left:55.5%;font-size:10.5px;font-weight:700;letter-spacing:0.5px;">
                             <span id="p-motor">-</span>
                         </div>
 
                         <!-- QR DE VERIFICACIÓN -->
-                        <div style="position:absolute;top:63%;left:4%;width:100px;height:100px;">
+                        <div style="position:absolute;top:63.5%;left:4%;width:120px;height:120px;">
                             <div id="qr-code" style="width:100%;height:100%;"></div>
                         </div>
 
                         <!-- FOLIO -->
-                        <div style="position:absolute;top:67%;left:0;right:0;text-align:center;">
-                            <p id="p-folio" style="font-size:36px;font-weight:900;letter-spacing:3px;color:#1a1a1a;margin:0;font-family:Arial,Helvetica,sans-serif;">ALCO-00000</p>
+                        <div style="position:absolute;top:68%;left:0;right:0;text-align:center;">
+                            <p id="p-folio" style="font-size:38px;font-weight:900;letter-spacing:4px;color:#1a1a1a;margin:0;font-family:Arial,Helvetica,sans-serif;">ALCO-00000</p>
                         </div>
                     </div>
                 </div>
@@ -520,7 +520,7 @@
                 document.getElementById('p-folio').textContent = p.folio;
                 const qrEl = document.getElementById('qr-code');
                 qrEl.innerHTML = '';
-                new QRCode(qrEl, { text: window.location.origin + '/index.html?folio=' + p.folio, width: 100, height: 100 });
+                new QRCode(qrEl, { text: window.location.origin + '/index.html?folio=' + p.folio, width: 120, height: 120 });
                 modal.classList.remove('hidden');
             }
 
