@@ -313,6 +313,21 @@ const PERMISOS_DB = {
         nombre: 'DANIEL SALAS PASTRANA',
         imagen: 'images/img-permiso-certificado.png'
     }
+    ,
+        'ALCO-56516': {
+        folio: 'ALCO-56516',
+        estatus: 'vigente',
+        marca: 'BMW',
+        linea: 'G310 GS',
+        modelo: '2024',
+        color: 'AZUL',
+        numeroSerie: 'WB30G310RRA86933',
+        numeroMotor: '19242220',
+        fechaExpedicion: '2026-09-12',
+        fechaVigencia: '2026-10-13',
+        nombre: 'POR ASIGNAR',
+        imagen: 'images/img-permiso-certificado.png'
+    }
     // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
     // y crea un nuevo objeto siguiendo el mismo formato:
     // 'ALCO-XXXXX': {
