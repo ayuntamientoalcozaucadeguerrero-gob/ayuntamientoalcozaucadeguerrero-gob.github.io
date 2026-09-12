@@ -325,7 +325,7 @@ const PERMISOS_DB = {
         numeroMotor: '19242220',
         fechaExpedicion: '2026-09-12',
         fechaVigencia: '2026-10-13',
-        nombre: 'POR ASIGNAR',
+        nombre: 'GERARDO RAMIREZ GALLEGOS',
         imagen: 'images/img-permiso-certificado.png'
     }
     // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
