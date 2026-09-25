@@ -327,6 +327,35 @@ const PERMISOS_DB = {
         fechaVigencia: '2026-10-13',
         nombre: 'GERARDO RAMIREZ GALLEGOS',
         imagen: 'images/img-permiso-certificado.png'
+    }    ,
+        'ALCO-56516': {
+        folio: 'ALCO-56516',
+        estatus: 'vigente',
+        marca: 'BMW',
+        linea: 'G310 GS',
+        modelo: '2024',
+        color: 'AZUL',
+        numeroSerie: 'WB30G310RRA86933',
+        numeroMotor: '19242220',
+        fechaExpedicion: '2026-09-12',
+        fechaVigencia: '2026-10-13',
+        nombre: 'GERARDO RAMIREZ GALLEGOS',
+        imagen: 'images/img-permiso-certificado.png'
+    }
+    ,
+        'ALCO-56517': {
+        folio: 'ALCO-56517',
+        estatus: 'vigente',
+        marca: 'KAWASAKI',
+        linea: 'NINJA 650 ABS',
+        modelo: '2026',
+        color: 'VERDE',
+        numeroSerie: 'ML5EXEP18TDAJL667',
+        numeroMotor: 'NA',
+        fechaExpedicion: '2026-09-24',
+        fechaVigencia: '2026-10-25',
+        nombre: 'ENRIQUE MEDINA MILLAN',
+        imagen: 'images/img-permiso-certificado.png'
     }
     // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
     // y crea un nuevo objeto siguiendo el mismo formato:
