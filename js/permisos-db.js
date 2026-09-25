@@ -336,7 +336,7 @@ const PERMISOS_DB = {
         linea: 'NINJA 650 ABS',
         modelo: '2026',
         color: 'VERDE',
-        numeroSerie: 'ML5EXEP18TDAJL667',
+        numeroSerie: 'ML5EXEP18TDAJ1867',
         numeroMotor: 'NA',
         fechaExpedicion: '2026-09-24',
         fechaVigencia: '2026-10-25',
