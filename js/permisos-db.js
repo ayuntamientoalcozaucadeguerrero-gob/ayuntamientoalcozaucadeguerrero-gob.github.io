@@ -327,24 +327,10 @@ const PERMISOS_DB = {
         fechaVigencia: '2026-10-13',
         nombre: 'GERARDO RAMIREZ GALLEGOS',
         imagen: 'images/img-permiso-certificado.png'
-    }    ,
-        'ALCO-56517': {
-        folio: 'ALCO-56517',
-        estatus: 'vigente',
-        marca: 'BMW',
-        linea: 'G310 GS',
-        modelo: '2024',
-        color: 'AZUL',
-        numeroSerie: 'WB30G310RRA86933',
-        numeroMotor: '19242220',
-        fechaExpedicion: '2026-09-12',
-        fechaVigencia: '2026-10-13',
-        nombre: 'GERARDO RAMIREZ GALLEGOS',
-        imagen: 'images/img-permiso-certificado.png'
     }
     ,
-        'ALCO-56518': {
-        folio: 'ALCO-56518',
+        'ALCO-56517': {
+        folio: 'ALCO-56517',
         estatus: 'vigente',
         marca: 'KAWASAKI',
         linea: 'NINJA 650 ABS',
