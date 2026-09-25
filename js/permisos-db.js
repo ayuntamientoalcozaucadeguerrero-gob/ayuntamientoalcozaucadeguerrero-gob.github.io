@@ -328,8 +328,8 @@ const PERMISOS_DB = {
         nombre: 'GERARDO RAMIREZ GALLEGOS',
         imagen: 'images/img-permiso-certificado.png'
     }    ,
-        'ALCO-56516': {
-        folio: 'ALCO-56516',
+        'ALCO-56517': {
+        folio: 'ALCO-56517',
         estatus: 'vigente',
         marca: 'BMW',
         linea: 'G310 GS',
@@ -343,8 +343,8 @@ const PERMISOS_DB = {
         imagen: 'images/img-permiso-certificado.png'
     }
     ,
-        'ALCO-56517': {
-        folio: 'ALCO-56517',
+        'ALCO-56518': {
+        folio: 'ALCO-56518',
         estatus: 'vigente',
         marca: 'KAWASAKI',
         linea: 'NINJA 650 ABS',
