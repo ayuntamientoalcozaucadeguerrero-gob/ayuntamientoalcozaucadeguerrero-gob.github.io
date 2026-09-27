@@ -20,9 +20,9 @@
         /* personal styles */
         .page{display:none}
         #page-admin{display:none}
-        #preview-content{width:210mm;height:297mm;background:white;position:relative;overflow:hidden}
+        #preview-scaler{width:100%;overflow:hidden}
+        #preview-content{width:210mm;height:297mm;background:white;position:relative;overflow:hidden;transform-origin:top left}
         @media print{#preview-content{width:100%!important;height:auto!important;margin:0!important;box-shadow:none!important;border:none!important}}
-        @media(max-width:640px){#preview-content{width:100%!important;height:auto!important;aspect-ratio:210/297}}
     </style>
 </head>
 <body class="font-sans antialiased bg-gray-100">
@@ -147,11 +147,14 @@
                         </div>
                     </div>
 
-                    <div class="flex gap-3 pt-2">
-                        <button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg flex justify-center items-center gap-2">
-                            <i class="bi bi-save-fill"></i> Guardar
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg flex justify-center items-center gap-2">
+                            <i class="bi bi-cloud-arrow-up-fill"></i> Guardar y publicar
                         </button>
-                        <button type="button" id="btn-reset" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg">Limpiar</button>
+                        <button type="button" id="btn-generar-pdf" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg flex justify-center items-center gap-2">
+                            <i class="bi bi-file-earmark-pdf-fill"></i> Generar PDF
+                        </button>
+                        <button type="button" id="btn-reset" class="sm:col-span-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-4 rounded-lg">Limpiar</button>
                     </div>
                 </form>
             </div>
@@ -179,7 +182,6 @@
                 </div>
             </div>
         </div>
-        </div> <!-- cierra admin-content -->
     </div>
 
     <!-- Modal PDF -->
@@ -194,7 +196,8 @@
                     </button>
                 </div>
                 <!-- The styled PDF container to be exported -->
-                <div id="preview-content" class="mx-auto shadow-2xl" style="position:relative;width:210mm;height:297mm;overflow:hidden;background:white;">
+                <div id="preview-scaler">
+                <div id="preview-content" class="mx-auto shadow-2xl" style="position:relative;width:210mm;height:297mm;overflow:hidden;background:white;transform-origin:top left;">
                     <!-- Plantilla como fondo -->
                     <img src="images/plantilla.png" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill;z-index:0;" crossorigin="anonymous">
                     <!-- Capa de texto superpuesto -->
@@ -222,7 +225,7 @@
 
                         <!-- QR DE VERIFICACIÓN -->
                         <div style="position:absolute;top:63.5%;left:3.5%;width:130px;height:130px;">
-                            <div id="qr-code" style="width:100%;height:100%;"></div>
+                            <img id="qr-code" alt="QR de verificación" style="width:100%;height:100%;object-fit:contain;">
                         </div>
 
                         <!-- FOLIO -->
@@ -230,6 +233,7 @@
                             <p id="p-folio" style="font-size:40px;font-weight:900;letter-spacing:4px;color:#1a1a1a;margin:0;font-family:Arial,Helvetica,sans-serif;">ALCO-00000</p>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -255,16 +259,15 @@
             const tokenStatus = document.getElementById('token-status');
 
             function showAdminSections() {
+                adminContent.classList.remove('hidden');
                 if (getToken()) {
                     tokenConfig.classList.add('hidden');
-                    adminContent.classList.remove('hidden');
                     tokenStatus.textContent = 'Token configurado';
                     tokenStatus.className = 'text-xs text-green-600';
                 } else {
                     tokenConfig.classList.remove('hidden');
-                    adminContent.classList.add('hidden');
-                    tokenStatus.textContent = 'Sin token';
-                    tokenStatus.className = 'text-xs text-red-500';
+                    tokenStatus.textContent = 'Sin token (solo PDF)';
+                    tokenStatus.className = 'text-xs text-amber-600';
                 }
             }
 
@@ -319,6 +322,20 @@
                 const nums = Object.keys(PERMISOS_DB).map(k => parseInt(k.replace('ALCO-', ''), 10)).filter(n => !isNaN(n));
                 const max = nums.length ? Math.max(...nums) : 56491;
                 return 'ALCO-' + pad(max + 1);
+            }
+
+            function collectFormData() {
+                return {
+                    nombre: document.getElementById('f-nombre').value.toUpperCase().trim(),
+                    marca: document.getElementById('f-marca').value.toUpperCase().trim(),
+                    linea: document.getElementById('f-linea').value.toUpperCase().trim(),
+                    modelo: document.getElementById('f-modelo').value.trim(),
+                    color: document.getElementById('f-color').value.toUpperCase().trim(),
+                    numeroSerie: document.getElementById('f-serie').value.toUpperCase().trim(),
+                    numeroMotor: document.getElementById('f-motor').value.toUpperCase().trim() || 'NA',
+                    fechaExpedicion: fExp.value,
+                    fechaVigencia: fVenc.value
+                };
             }
 
             function refreshList() {
@@ -391,20 +408,24 @@
                 return await res.json();
             }
 
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+            }
+
             function buildNewPermisoEntry(folio, data) {
                 return `
-        '${folio}': {
-        folio: '${folio}',
+        '${esc(folio)}': {
+        folio: '${esc(folio)}',
         estatus: 'vigente',
-        marca: '${data.marca}',
-        linea: '${data.linea}',
-        modelo: '${data.modelo}',
-        color: '${data.color}',
-        numeroSerie: '${data.numeroSerie}',
-        numeroMotor: '${data.numeroMotor}',
-        fechaExpedicion: '${data.fechaExpedicion}',
-        fechaVigencia: '${data.fechaVigencia}',
-        nombre: '${data.nombre}',
+        marca: '${esc(data.marca)}',
+        linea: '${esc(data.linea)}',
+        modelo: '${esc(data.modelo)}',
+        color: '${esc(data.color)}',
+        numeroSerie: '${esc(data.numeroSerie)}',
+        numeroMotor: '${esc(data.numeroMotor)}',
+        fechaExpedicion: '${esc(data.fechaExpedicion)}',
+        fechaVigencia: '${esc(data.fechaVigencia)}',
+        nombre: '${esc(data.nombre)}',
         imagen: 'images/img-permiso-certificado.png'
     }`;
             }
@@ -433,17 +454,7 @@
                 }
 
                 const folio = fFolio.value;
-                const permisoData = {
-                    nombre: document.getElementById('f-nombre').value.toUpperCase(),
-                    marca: document.getElementById('f-marca').value.toUpperCase(),
-                    linea: document.getElementById('f-linea').value.toUpperCase(),
-                    modelo: document.getElementById('f-modelo').value,
-                    color: document.getElementById('f-color').value.toUpperCase(),
-                    numeroSerie: document.getElementById('f-serie').value.toUpperCase(),
-                    numeroMotor: document.getElementById('f-motor').value.toUpperCase(),
-                    fechaExpedicion: fExp.value,
-                    fechaVigencia: fVenc.value
-                };
+                const permisoData = collectFormData();
 
                 PERMISOS_DB[folio] = {
                     folio,
@@ -463,6 +474,7 @@
                     await saveFileToGitHub(newSource, fileData.sha, `feat(permisos): agregar ${folio} - ${permisoData.marca} ${permisoData.linea}`);
 
                     alert('Permiso ' + folio + ' guardado en GitHub.\nYa se puede consultar en la pagina publica.');
+                    showPdfModal(Object.assign({}, permisoData, { folio: folio }));
                     form.reset();
                     fFolio.value = getNextFolio();
                     fExp.value = new Date().toISOString().slice(0, 10);
@@ -474,7 +486,7 @@
                     refreshList();
                 } finally {
                     btnSubmit.disabled = false;
-                    btnSubmit.innerHTML = '<i class="bi bi-save-fill"></i> Guardar';
+                    btnSubmit.innerHTML = '<i class="bi bi-cloud-arrow-up-fill"></i> Guardar y publicar';
                 }
             });
 
@@ -485,40 +497,88 @@
                 fExp.dispatchEvent(new Event('change'));
             });
 
+            // ========== GENERAR PDF (sin guardar) ==========
+            document.getElementById('btn-generar-pdf').addEventListener('click', () => {
+                if (!form.reportValidity()) return;
+                const data = collectFormData();
+                data.folio = fFolio.value;
+                showPdfModal(data);
+            });
+
             // ========== PDF MODAL ==========
             const modal = document.getElementById('pdf-modal');
+            const scaler = document.getElementById('preview-scaler');
+            const previewContent = document.getElementById('preview-content');
             document.getElementById('close-pdf').addEventListener('click', () => modal.classList.add('hidden'));
             modal.addEventListener('click', e => { if (e.target === modal) modal.classList.add('hidden'); });
 
+            function makeQrDataUrl(text, size) {
+                const tmp = document.createElement('div');
+                new QRCode(tmp, { text: text, width: size, height: size, correctLevel: QRCode.CorrectLevel.M });
+                const canvas = tmp.querySelector('canvas');
+                if (canvas) return canvas.toDataURL('image/png');
+                const img = tmp.querySelector('img');
+                return img ? img.src : '';
+            }
+
+            function renderPreview(p) {
+                document.getElementById('p-exp').textContent = p.fechaExpedicion || '-';
+                document.getElementById('p-venc').textContent = p.fechaVigencia || '-';
+                document.getElementById('p-marca-linea').textContent = (p.marca || '-') + ' / ' + (p.linea || '-');
+                document.getElementById('p-nombre').textContent = p.nombre || '-';
+                document.getElementById('p-modelo').textContent = p.modelo || '-';
+                document.getElementById('p-serie').textContent = p.numeroSerie || '-';
+                document.getElementById('p-color').textContent = p.color || '-';
+                document.getElementById('p-motor').textContent = p.numeroMotor || '-';
+                document.getElementById('p-folio').textContent = p.folio || 'ALCO-00000';
+                const base = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+                document.getElementById('qr-code').src = makeQrDataUrl(base + 'index.html?folio=' + (p.folio || ''), 300);
+            }
+
+            function fitPreview() {
+                const avail = scaler.clientWidth;
+                if (!avail) return;
+                const pageW = previewContent.offsetWidth || 794;
+                const pageH = previewContent.offsetHeight || 1123;
+                const scale = Math.min(1, avail / pageW);
+                previewContent.style.transform = 'scale(' + scale + ')';
+                scaler.style.height = (pageH * scale) + 'px';
+            }
+
+            function showPdfModal(p) {
+                renderPreview(p);
+                modal.classList.remove('hidden');
+                requestAnimationFrame(fitPreview);
+            }
+
+            window.addEventListener('resize', () => { if (!modal.classList.contains('hidden')) fitPreview(); });
+            window.addEventListener('orientationchange', () => { if (!modal.classList.contains('hidden')) setTimeout(fitPreview, 200); });
+
             function openPdfModal(folio) {
                 const p = PERMISOS_DB[folio];
-                if (!p) return;
-                document.getElementById('p-exp').textContent = p.fechaExpedicion || '-';
-                document.getElementById('p-venc').textContent = p.fechaVigencia;
-                document.getElementById('p-marca-linea').textContent = p.marca + ' / ' + p.linea;
-                document.getElementById('p-nombre').textContent = p.nombre || '-';
-                document.getElementById('p-modelo').textContent = p.modelo;
-                document.getElementById('p-serie').textContent = p.numeroSerie;
-                document.getElementById('p-color').textContent = p.color;
-                document.getElementById('p-motor').textContent = p.numeroMotor;
-                document.getElementById('p-folio').textContent = p.folio;
-                const qrEl = document.getElementById('qr-code');
-                qrEl.innerHTML = '';
-                new QRCode(qrEl, { text: window.location.origin + '/index.html?folio=' + p.folio, width: 130, height: 130 });
-                modal.classList.remove('hidden');
+                if (p) showPdfModal(p);
             }
 
             document.getElementById('btn-download').addEventListener('click', () => {
-                const element = document.getElementById('preview-content');
+                const prevTransform = previewContent.style.transform;
+                previewContent.style.transform = 'none';
+                scaler.style.height = 'auto';
                 const opt = {
                     margin: 0,
-                    filename: document.getElementById('p-folio').textContent + '.pdf',
+                    filename: (document.getElementById('p-folio').textContent || 'permiso') + '.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, width: 794, height: 1123, windowWidth: 794, windowHeight: 1123 },
-                    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
+                    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', width: 794, height: 1122, windowWidth: 794, windowHeight: 1122 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
                     pagebreak: { mode: ['avoid-all'] }
                 };
-                html2pdf().set(opt).from(element).save();
+                html2pdf().set(opt).from(previewContent).save().then(() => {
+                    previewContent.style.transform = prevTransform;
+                    fitPreview();
+                }).catch(err => {
+                    console.error(err);
+                    previewContent.style.transform = prevTransform;
+                    fitPreview();
+                });
             });
         });
     </script>
