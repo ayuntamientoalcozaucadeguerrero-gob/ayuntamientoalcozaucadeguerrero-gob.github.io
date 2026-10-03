@@ -180,6 +180,12 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="mt-4 pt-4 border-t flex items-center justify-between gap-3">
+                    <p class="text-xs text-gray-500">¿La página pública no muestra los cambios recientes? Actualiza la versión de caché.</p>
+                    <button id="btn-bump-cache" class="shrink-0 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center gap-2">
+                        <i class="bi bi-arrow-repeat"></i> Actualizar caché
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -374,6 +380,8 @@
             refreshList();
 
             // ========== GITHUB API HELPERS ==========
+            const HTML_CACHE_FILES = ['index.html', 'tramites.html', 'admin.html'];
+
             function getApiHeaders() {
                 return {
                     'Authorization': 'token ' + getToken(),
@@ -382,15 +390,15 @@
                 };
             }
 
-            async function getFileFromGitHub() {
-                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
+            async function getFileFromGitHub(path = FILE_PATH) {
+                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
                 const res = await fetch(url, { headers: getApiHeaders() });
-                if (!res.ok) throw new Error('Error al leer archivo: ' + res.status);
+                if (!res.ok) throw new Error('Error al leer ' + path + ': ' + res.status);
                 return await res.json();
             }
 
-            async function saveFileToGitHub(newContent, sha, commitMsg) {
-                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
+            async function saveFileToGitHub(newContent, sha, commitMsg, path = FILE_PATH) {
+                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
                 const body = {
                     message: commitMsg,
                     content: btoa(unescape(encodeURIComponent(newContent))),
@@ -406,6 +414,29 @@
                     throw new Error('Error al guardar: ' + (err.message || res.status));
                 }
                 return await res.json();
+            }
+
+            // Sube la version ?v= de permisos-db.js en los HTML para forzar la recarga en la pagina publica
+            async function bumpCacheVersions() {
+                let updated = 0;
+                let newVersion = null;
+                for (const path of HTML_CACHE_FILES) {
+                    try {
+                        const fileData = await getFileFromGitHub(path);
+                        const decoded = decodeURIComponent(escape(atob(fileData.content)));
+                        const re = /js\/permisos-db\.js\?v=(\d+)/;
+                        const m = decoded.match(re);
+                        if (!m) continue;
+                        const next = parseInt(m[1], 10) + 1;
+                        const newSource = decoded.replace(re, 'js/permisos-db.js?v=' + next);
+                        await saveFileToGitHub(newSource, fileData.sha, `chore: bump cache de permisos-db.js a v=${next} (${path})`, path);
+                        updated++;
+                        newVersion = next;
+                    } catch (e) {
+                        console.warn('No se pudo actualizar ' + path + ':', e);
+                    }
+                }
+                return { updated, newVersion };
             }
 
             function esc(s) {
@@ -473,7 +504,15 @@
                     const newSource = insertEntryIntoSource(decoded, newEntry);
                     await saveFileToGitHub(newSource, fileData.sha, `feat(permisos): agregar ${folio} - ${permisoData.marca} ${permisoData.linea}`);
 
-                    alert('Permiso ' + folio + ' guardado en GitHub.\nYa se puede consultar en la pagina publica.');
+                    let cacheInfo = '';
+                    try {
+                        const r = await bumpCacheVersions();
+                        if (r.updated) cacheInfo = '\nCache actualizada a v=' + r.newVersion + ' en ' + r.updated + ' archivo(s).';
+                    } catch (cacheErr) {
+                        cacheInfo = '\n(No se pudo actualizar la cache: ' + cacheErr.message + ')';
+                    }
+
+                    alert('Permiso ' + folio + ' guardado en GitHub.' + cacheInfo + '\nYa se puede consultar en la pagina publica.');
                     showPdfModal(Object.assign({}, permisoData, { folio: folio }));
                     form.reset();
                     fFolio.value = getNextFolio();
@@ -495,6 +534,32 @@
                 fFolio.value = getNextFolio();
                 fExp.value = new Date().toISOString().slice(0, 10);
                 fExp.dispatchEvent(new Event('change'));
+            });
+
+            // ========== ACTUALIZAR CACHE MANUALMENTE ==========
+            document.getElementById('btn-bump-cache').addEventListener('click', async e => {
+                const btn = e.currentTarget;
+                if (!getToken()) {
+                    alert('Primero debes configurar tu token de GitHub.');
+                    showAdminSections();
+                    return;
+                }
+                const original = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="bi bi-hourglass-split animate-spin"></i> Actualizando...';
+                try {
+                    const r = await bumpCacheVersions();
+                    if (r.updated) {
+                        alert('Cache actualizada a v=' + r.newVersion + ' en ' + r.updated + ' archivo(s).\nLa pagina publica recargara la informacion.');
+                    } else {
+                        alert('No se encontro la referencia a permisos-db.js en los HTML.');
+                    }
+                } catch (err) {
+                    alert('Error al actualizar cache: ' + err.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = original;
+                }
             });
 
             // ========== GENERAR PDF (sin guardar) ==========
