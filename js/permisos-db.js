@@ -343,7 +343,22 @@ const PERMISOS_DB = {
         nombre: 'ENRIQUE MEDINA MILLAN',
         imagen: 'images/img-permiso-certificado.png'
     }
-    // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
+    ,
+        'ALCO-56518': {
+        folio: 'ALCO-56518',
+        estatus: 'vigente',
+        marca: 'BAJAJ',
+        linea: 'DOMINAR 400',
+        modelo: '2022',
+        color: 'NEGRO',
+        numeroSerie: 'MD2A67MX3NCL88201',
+        numeroMotor: 'JFYGLK47722',
+        fechaExpedicion: '2026-10-02',
+        fechaVigencia: '2026-11-02',
+        nombre: 'DANIEL SALAS PASTRANA',
+        imagen: 'images/img-permiso-certificado.png'
+    }
+        // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
     // y crea un nuevo objeto siguiendo el mismo formato:
     // 'ALCO-XXXXX': {
     //     folio: 'ALCO-XXXXX',
