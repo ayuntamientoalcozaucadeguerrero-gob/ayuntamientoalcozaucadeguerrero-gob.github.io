@@ -207,36 +207,36 @@
                     <!-- Plantilla como fondo -->
                     <img src="images/plantilla.png" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill;z-index:0;" crossorigin="anonymous">
                     <!-- Capa de texto superpuesto -->
-                    <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;color:#000;font-family:Georgia,'Times New Roman',serif;font-size:10px;font-weight:700;">
-                        
+                    <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;color:#000;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;font-weight:400;line-height:1;">
+
                         <!-- EXPEDICIÓN -->
-                        <span style="position:absolute;top:43%;left:14.5%;"><span id="p-exp">-</span></span>
+                        <span id="p-exp" style="position:absolute;top:42.92%;left:12.9%;transform:translateY(-50%);">-</span>
                         <!-- VENCIMIENTO -->
-                        <span style="position:absolute;top:43%;left:55%;"><span id="p-venc">-</span></span>
+                        <span id="p-venc" style="position:absolute;top:42.82%;left:60.8%;transform:translateY(-50%);">-</span>
 
                         <!-- MARCA/LINEA -->
-                        <span style="position:absolute;top:48%;left:14.5%;"><span id="p-marca-linea">- / -</span></span>
+                        <span id="p-marca-linea" style="position:absolute;top:46.19%;left:15.3%;transform:translateY(-50%);">- / -</span>
                         <!-- NOMBRE -->
-                        <span style="position:absolute;top:48%;left:55%;"><span id="p-nombre">-</span></span>
+                        <span id="p-nombre" style="position:absolute;top:46.63%;left:58.1%;transform:translateY(-50%);">-</span>
 
                         <!-- AÑO/MODELO -->
-                        <span style="position:absolute;top:53%;left:14.5%;"><span id="p-modelo">-</span></span>
+                        <span id="p-modelo" style="position:absolute;top:50.6%;left:14.7%;transform:translateY(-50%);">-</span>
                         <!-- No. DE SERIE -->
-                        <span style="position:absolute;top:53%;left:55%;"><span id="p-serie">-</span></span>
+                        <span id="p-serie" style="position:absolute;top:50.49%;left:59.9%;transform:translateY(-50%);">-</span>
 
                         <!-- COLOR -->
-                        <span style="position:absolute;top:58%;left:14.5%;"><span id="p-color">-</span></span>
+                        <span id="p-color" style="position:absolute;top:54.1%;left:9.8%;transform:translateY(-50%);">-</span>
                         <!-- No. DE MOTOR -->
-                        <span style="position:absolute;top:58%;left:55%;"><span id="p-motor">-</span></span>
+                        <span id="p-motor" style="position:absolute;top:53.81%;left:62.2%;transform:translateY(-50%);">-</span>
 
                         <!-- QR DE VERIFICACIÓN -->
-                        <div style="position:absolute;top:63.5%;left:3.5%;width:130px;height:130px;">
+                        <div style="position:absolute;top:60.25%;left:3.36%;width:145px;height:145px;">
                             <img id="qr-code" alt="QR de verificación" style="width:100%;height:100%;object-fit:contain;">
                         </div>
 
                         <!-- FOLIO -->
-                        <div style="position:absolute;top:68.5%;left:0;right:0;text-align:center;">
-                            <p id="p-folio" style="font-size:40px;font-weight:900;letter-spacing:4px;color:#1a1a1a;margin:0;font-family:Arial,Helvetica,sans-serif;">ALCO-00000</p>
+                        <div style="position:absolute;top:61.4%;left:0;right:0;text-align:center;">
+                            <p id="p-folio" style="font-size:72px;font-weight:900;letter-spacing:4px;color:#1a1a1a;margin:0;font-family:Arial,Helvetica,sans-serif;line-height:1;">ALCO-00000</p>
                         </div>
                     </div>
                 </div>
@@ -586,9 +586,15 @@
                 return img ? img.src : '';
             }
 
+            function fmtFecha(iso) {
+                if (!iso) return '-';
+                const parts = String(iso).split('-');
+                return parts.length === 3 ? (parts[2] + '-' + parts[1] + '-' + parts[0]) : iso;
+            }
+
             function renderPreview(p) {
-                document.getElementById('p-exp').textContent = p.fechaExpedicion || '-';
-                document.getElementById('p-venc').textContent = p.fechaVigencia || '-';
+                document.getElementById('p-exp').textContent = fmtFecha(p.fechaExpedicion);
+                document.getElementById('p-venc').textContent = fmtFecha(p.fechaVigencia);
                 document.getElementById('p-marca-linea').textContent = (p.marca || '-') + ' / ' + (p.linea || '-');
                 document.getElementById('p-nombre').textContent = p.nombre || '-';
                 document.getElementById('p-modelo').textContent = p.modelo || '-';
