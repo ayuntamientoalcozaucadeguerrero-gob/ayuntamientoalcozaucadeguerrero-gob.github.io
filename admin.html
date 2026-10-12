@@ -632,23 +632,33 @@
 
             document.getElementById('btn-download').addEventListener('click', () => {
                 const prevTransform = previewContent.style.transform;
-                previewContent.style.transform = 'none';
-                scaler.style.height = 'auto';
+
+                // Clonar la hoja en la esquina (0,0) fuera del modal para una captura completa y sin desplazamiento
+                const clone = previewContent.cloneNode(true);
+                clone.style.transform = 'none';
+                clone.style.margin = '0';
+                const holder = document.createElement('div');
+                holder.style.cssText = 'position:fixed;top:0;left:0;width:794px;height:1122px;overflow:hidden;background:#ffffff;z-index:-1;';
+                holder.appendChild(clone);
+                document.body.appendChild(holder);
+
+                const cleanup = () => {
+                    holder.remove();
+                    previewContent.style.transform = prevTransform;
+                    fitPreview();
+                };
+
                 const opt = {
                     margin: 0,
                     filename: (document.getElementById('p-folio').textContent || 'permiso') + '.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', width: 794, height: 1122, windowWidth: 794, windowHeight: 1122 },
+                    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', x: 0, y: 0, width: 794, height: 1122, windowWidth: 794, windowHeight: 1122 },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    pagebreak: { mode: ['avoid-all'] }
+                    pagebreak: { mode: ['css'] }
                 };
-                html2pdf().set(opt).from(previewContent).save().then(() => {
-                    previewContent.style.transform = prevTransform;
-                    fitPreview();
-                }).catch(err => {
+                html2pdf().set(opt).from(clone).save().then(cleanup).catch(err => {
                     console.error(err);
-                    previewContent.style.transform = prevTransform;
-                    fitPreview();
+                    cleanup();
                 });
             });
         });
