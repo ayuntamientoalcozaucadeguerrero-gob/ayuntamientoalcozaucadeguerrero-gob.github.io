@@ -388,7 +388,7 @@ const PERMISOS_DB = {
         nombre: 'DANIEL SALAS PASTRANA',
         imagen: 'images/img-permiso-certificado.png'
     }
-    // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
+    // Para agrepsdermisos, simplemente agrega una coma despues del ultimo objeto
     // y crea un nuevo objeto siguiendo el mismo formato:
     // 'ALCO-XXXXX': {
     //     folio: 'ALCO-XXXXX',
