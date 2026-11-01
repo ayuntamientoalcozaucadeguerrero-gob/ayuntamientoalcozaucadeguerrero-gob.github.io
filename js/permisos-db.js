@@ -374,7 +374,7 @@ const PERMISOS_DB = {
         imagen: 'images/img-permiso-certificado.png'
     }
     ,
-        'ALCO-56518': {
+        'ALCO-56520': {
         folio: 'ALCO-56520',
         estatus: 'vigente',
         marca: 'BAJAJ',
