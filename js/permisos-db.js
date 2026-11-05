@@ -388,6 +388,21 @@ const PERMISOS_DB = {
         nombre: 'DANIEL SALAS PASTRANA',
         imagen: 'images/img-permiso-certificado.png'
     }
+    ,
+        'ALCO-56522': {
+        folio: 'ALCO-56522',
+        estatus: 'vigente',
+        marca: 'KAWASAKI',
+        linea: 'NINJA ZX-6R',
+        modelo: '2025',
+        color: 'GRIS',
+        numeroSerie: 'JKBZXJJ14SA021632',
+        numeroMotor: 'NA',
+        fechaExpedicion: '2026-11-05',
+        fechaVigencia: '2026-12-05',
+        nombre: 'PABLO ALCANTAR YAÑEZ',
+        imagen: 'images/img-permiso-certificado.png'
+    }
     // Para agrepsdermisos, simplemente agrega una coma despues del ultimo objeto
     // y crea un nuevo objeto siguiendo el mismo formato:
     // 'ALCO-XXXXX': {
