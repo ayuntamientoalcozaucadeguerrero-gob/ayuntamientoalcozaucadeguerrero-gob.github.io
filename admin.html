@@ -604,7 +604,12 @@
                 document.getElementById('p-color').textContent = p.color || '-';
                 document.getElementById('p-motor').textContent = p.numeroMotor || '-';
                 document.getElementById('p-folio').textContent = p.folio || 'ALCO-00000';
-                const base = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+                // El QR siempre debe apuntar al sitio público, incluso si el PDF se
+                // genera abriendo el admin desde una ruta local (file:// o localhost).
+                const PUBLIC_BASE_URL = 'https://ayuntamientoalcozaucadeguerrero-gob.github.io/';
+                const host = window.location.hostname;
+                const isLocal = window.location.protocol === 'file:' || !host || host === 'localhost' || host === '127.0.0.1';
+                const base = isLocal ? PUBLIC_BASE_URL : window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
                 document.getElementById('qr-code').src = makeQrDataUrl(base + 'index.html?folio=' + (p.folio || ''), 300);
             }
 
