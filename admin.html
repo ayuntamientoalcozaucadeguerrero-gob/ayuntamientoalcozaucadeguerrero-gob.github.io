@@ -63,6 +63,7 @@
                     </div>
                     <div class="flex items-center gap-4">
                         <span id="token-status" class="text-xs text-gray-400"></span>
+                        <button id="btn-change-token" class="hidden text-blue-600 hover:text-blue-800 font-semibold text-sm">Cambiar token</button>
                         <button id="btn-logout" class="text-red-600 hover:text-red-800 font-semibold text-sm">Cerrar sesión</button>
                     </div>
                 </div>
@@ -248,7 +249,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/permisos-db.js?v=9"></script>
+    <script src="js/permisos-db.js?v=10"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // ========== CONFIG GITHUB ==========
@@ -265,6 +266,7 @@
             const adminContent = document.getElementById('admin-content');
             const tokenConfig = document.getElementById('token-config');
             const tokenStatus = document.getElementById('token-status');
+            const btnChangeToken = document.getElementById('btn-change-token');
 
             function showAdminSections() {
                 adminContent.classList.remove('hidden');
@@ -272,12 +274,22 @@
                     tokenConfig.classList.add('hidden');
                     tokenStatus.textContent = 'Token configurado';
                     tokenStatus.className = 'text-xs text-green-600';
+                    btnChangeToken.classList.remove('hidden');
                 } else {
                     tokenConfig.classList.remove('hidden');
                     tokenStatus.textContent = 'Sin token (solo PDF)';
                     tokenStatus.className = 'text-xs text-amber-600';
+                    btnChangeToken.classList.add('hidden');
                 }
             }
+
+            btnChangeToken.addEventListener('click', () => {
+                localStorage.removeItem('github_permisos_token');
+                showAdminSections();
+                const input = document.getElementById('github-token-input');
+                input.value = '';
+                input.focus();
+            });
 
             // ========== TOKEN FORM ==========
             document.getElementById('token-form').addEventListener('submit', e => {
@@ -326,6 +338,11 @@
             const btnSubmit = form.querySelector('button[type="submit"]');
 
             function pad(n) { return String(n).padStart(5, '0'); }
+            function toLocalISODate(date = new Date()) {
+                return date.getFullYear() + '-' +
+                    String(date.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(date.getDate()).padStart(2, '0');
+            }
             function getNextFolio() {
                 const nums = Object.keys(PERMISOS_DB).map(k => parseInt(k.replace('ALCO-', ''), 10)).filter(n => !isNaN(n));
                 const max = nums.length ? Math.max(...nums) : 56491;
@@ -372,12 +389,12 @@
                 if (fExp.value) {
                     const d = new Date(fExp.value + 'T12:00:00');
                     d.setDate(d.getDate() + 30);
-                    fVenc.value = d.toISOString().slice(0, 10);
+                    fVenc.value = toLocalISODate(d);
                 }
             });
 
             fFolio.value = getNextFolio();
-            fExp.value = new Date().toISOString().slice(0, 10);
+            fExp.value = toLocalISODate();
             fExp.dispatchEvent(new Event('change'));
             refreshList();
 
@@ -392,10 +409,47 @@
                 };
             }
 
+            function encodeBase64Utf8(text) {
+                const bytes = new TextEncoder().encode(text);
+                let binary = '';
+                const chunk = 0x8000;
+                for (let i = 0; i < bytes.length; i += chunk) {
+                    binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+                }
+                return btoa(binary);
+            }
+
+            function decodeBase64Utf8(base64) {
+                const binary = atob(String(base64).replace(/\s/g, ''));
+                const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+                return new TextDecoder('utf-8').decode(bytes);
+            }
+
+            async function readApiError(res, path) {
+                let detail = '';
+                try {
+                    const body = await res.json();
+                    detail = body && body.message ? body.message : '';
+                } catch (e) { /* respuesta sin JSON */ }
+                if (res.status === 401) return 'El token de GitHub no es válido o expiró. Usa "Cambiar token" y pega uno nuevo con permiso repo.';
+                if (res.status === 403) {
+                    if (/rate limit/i.test(detail)) return 'GitHub limitó temporalmente las solicitudes. Espera unos minutos e intenta de nuevo.';
+                    return 'El token no tiene permiso de escritura (repo) sobre ' + path + '.';
+                }
+                if (res.status === 404) return 'No se encontró ' + path + '. Verifica que el token tenga acceso al repositorio.';
+                if (res.status === 409) return 'El archivo cambió mientras se guardaba. Intenta guardar de nuevo.';
+                return 'GitHub respondió ' + res.status + (detail ? ': ' + detail : '') + ' al acceder a ' + path + '.';
+            }
+
             async function getFileFromGitHub(path = FILE_PATH) {
                 const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
-                const res = await fetch(url, { headers: getApiHeaders() });
-                if (!res.ok) throw new Error('Error al leer ' + path + ': ' + res.status);
+                let res;
+                try {
+                    res = await fetch(url, { headers: getApiHeaders(), cache: 'no-store' });
+                } catch (e) {
+                    throw new Error('No se pudo conectar con GitHub. Revisa tu conexión a internet.');
+                }
+                if (!res.ok) throw new Error(await readApiError(res, path));
                 return await res.json();
             }
 
@@ -403,18 +457,20 @@
                 const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
                 const body = {
                     message: commitMsg,
-                    content: btoa(unescape(encodeURIComponent(newContent))),
+                    content: encodeBase64Utf8(newContent),
                     sha: sha
                 };
-                const res = await fetch(url, {
-                    method: 'PUT',
-                    headers: getApiHeaders(),
-                    body: JSON.stringify(body)
-                });
-                if (!res.ok) {
-                    const err = await res.json();
-                    throw new Error('Error al guardar: ' + (err.message || res.status));
+                let res;
+                try {
+                    res = await fetch(url, {
+                        method: 'PUT',
+                        headers: getApiHeaders(),
+                        body: JSON.stringify(body)
+                    });
+                } catch (e) {
+                    throw new Error('No se pudo conectar con GitHub al guardar ' + path + '.');
                 }
+                if (!res.ok) throw new Error(await readApiError(res, path));
                 return await res.json();
             }
 
@@ -425,7 +481,7 @@
                 for (const path of HTML_CACHE_FILES) {
                     try {
                         const fileData = await getFileFromGitHub(path);
-                        const decoded = decodeURIComponent(escape(atob(fileData.content)));
+                        const decoded = decodeBase64Utf8(fileData.content);
                         const re = /js\/permisos-db\.js\?v=(\d+)/;
                         const m = decoded.match(re);
                         if (!m) continue;
@@ -464,16 +520,30 @@
             }
 
             function insertEntryIntoSource(source, entryText) {
-                const marker = "    // Para agregar mas permisos";
-                const markerIdx = source.indexOf(marker);
-                if (markerIdx !== -1) {
-                    return source.slice(0, markerIdx) + '    ,' + entryText + '\n' + source.slice(markerIdx);
+                const markers = [
+                    "    // Para agregar mas permisos",
+                    "    // Para agregar más permisos",
+                    "    // Para agrepsdermisos"
+                ];
+                for (const marker of markers) {
+                    const markerIdx = source.indexOf(marker);
+                    if (markerIdx !== -1) {
+                        return source.slice(0, markerIdx) + '    ,' + entryText + '\n' + source.slice(markerIdx);
+                    }
                 }
                 const closingBrace = source.lastIndexOf('};');
                 if (closingBrace !== -1) {
                     return source.slice(0, closingBrace) + '    ,' + entryText + '\n' + source.slice(closingBrace);
                 }
-                throw new Error('No se encontro el cierre de PERMISOS_DB en el archivo');
+                throw new Error('No se encontró el cierre de PERMISOS_DB en el archivo.');
+            }
+
+            function validateGeneratedSource(source) {
+                try {
+                    new Function(source);
+                } catch (e) {
+                    throw new Error('La actualización generaría código inválido: ' + e.message);
+                }
             }
 
             // ========== SUBMIT: SAVE TO GITHUB ==========
@@ -488,6 +558,7 @@
 
                 const folio = fFolio.value;
                 const permisoData = collectFormData();
+                const previousEntry = PERMISOS_DB[folio];
 
                 PERMISOS_DB[folio] = {
                     folio,
@@ -501,40 +572,50 @@
 
                 try {
                     const fileData = await getFileFromGitHub();
-                    const decoded = decodeURIComponent(escape(atob(fileData.content)));
+                    const decoded = decodeBase64Utf8(fileData.content);
                     const newEntry = buildNewPermisoEntry(folio, permisoData);
                     const newSource = insertEntryIntoSource(decoded, newEntry);
+                    validateGeneratedSource(newSource);
                     await saveFileToGitHub(newSource, fileData.sha, `feat(permisos): agregar ${folio} - ${permisoData.marca} ${permisoData.linea}`);
-
-                    let cacheInfo = '';
-                    try {
-                        const r = await bumpCacheVersions();
-                        if (r.updated) cacheInfo = '\nCache actualizada a v=' + r.newVersion + ' en ' + r.updated + ' archivo(s).';
-                    } catch (cacheErr) {
-                        cacheInfo = '\n(No se pudo actualizar la cache: ' + cacheErr.message + ')';
-                    }
-
-                    alert('Permiso ' + folio + ' guardado en GitHub.' + cacheInfo + '\nYa se puede consultar en la pagina publica.');
-                    showPdfModal(Object.assign({}, permisoData, { folio: folio }));
-                    form.reset();
-                    fFolio.value = getNextFolio();
-                    fExp.value = new Date().toISOString().slice(0, 10);
-                    fExp.dispatchEvent(new Event('change'));
-                    refreshList();
                 } catch (err) {
                     alert('Error al guardar: ' + err.message);
                     console.error(err);
+                    if (previousEntry) PERMISOS_DB[folio] = previousEntry;
+                    else delete PERMISOS_DB[folio];
                     refreshList();
+                    return;
                 } finally {
                     btnSubmit.disabled = false;
                     btnSubmit.innerHTML = '<i class="bi bi-cloud-arrow-up-fill"></i> Guardar y publicar';
                 }
+
+                // El permiso ya se guardó. Cualquier fallo de la vista previa o del
+                // QR no debe mostrarse como si hubiera fallado el guardado.
+                let cacheInfo = '';
+                try {
+                    const r = await bumpCacheVersions();
+                    if (r.updated) cacheInfo = '\nCache actualizada a v=' + r.newVersion + ' en ' + r.updated + ' archivo(s).';
+                } catch (cacheErr) {
+                    cacheInfo = '\n(No se pudo actualizar la cache: ' + cacheErr.message + ')';
+                }
+
+                alert('Permiso ' + folio + ' guardado en GitHub.' + cacheInfo + '\nYa se puede consultar en la pagina publica.');
+                try {
+                    showPdfModal(Object.assign({}, permisoData, { folio: folio }));
+                } catch (previewErr) {
+                    console.warn('No se pudo mostrar la vista previa:', previewErr);
+                }
+                form.reset();
+                fFolio.value = getNextFolio();
+                fExp.value = toLocalISODate();
+                fExp.dispatchEvent(new Event('change'));
+                refreshList();
             });
 
             document.getElementById('btn-reset').addEventListener('click', () => {
                 form.reset();
                 fFolio.value = getNextFolio();
-                fExp.value = new Date().toISOString().slice(0, 10);
+                fExp.value = toLocalISODate();
                 fExp.dispatchEvent(new Event('change'));
             });
 
@@ -580,12 +661,21 @@
             modal.addEventListener('click', e => { if (e.target === modal) modal.classList.add('hidden'); });
 
             function makeQrDataUrl(text, size) {
-                const tmp = document.createElement('div');
-                new QRCode(tmp, { text: text, width: size, height: size, correctLevel: QRCode.CorrectLevel.M });
-                const canvas = tmp.querySelector('canvas');
-                if (canvas) return canvas.toDataURL('image/png');
-                const img = tmp.querySelector('img');
-                return img ? img.src : '';
+                try {
+                    if (typeof QRCode === 'undefined') {
+                        console.warn('La librería de códigos QR no está disponible.');
+                        return '';
+                    }
+                    const tmp = document.createElement('div');
+                    new QRCode(tmp, { text: text, width: size, height: size, correctLevel: QRCode.CorrectLevel.M });
+                    const canvas = tmp.querySelector('canvas');
+                    if (canvas) return canvas.toDataURL('image/png');
+                    const img = tmp.querySelector('img');
+                    return img ? img.src : '';
+                } catch (e) {
+                    console.warn('No se pudo generar el código QR:', e);
+                    return '';
+                }
             }
 
             function fmtFecha(iso) {
@@ -610,7 +700,15 @@
                 const host = window.location.hostname;
                 const isLocal = window.location.protocol === 'file:' || !host || host === 'localhost' || host === '127.0.0.1';
                 const base = isLocal ? PUBLIC_BASE_URL : window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
-                document.getElementById('qr-code').src = makeQrDataUrl(base + 'index.html?folio=' + (p.folio || ''), 300);
+                const qrEl = document.getElementById('qr-code');
+                const qrData = makeQrDataUrl(base + 'index.html?folio=' + (p.folio || ''), 300);
+                if (qrData) {
+                    qrEl.src = qrData;
+                    qrEl.style.visibility = 'visible';
+                } else {
+                    qrEl.removeAttribute('src');
+                    qrEl.style.visibility = 'hidden';
+                }
             }
 
             function fitPreview() {
@@ -681,8 +779,9 @@
 
                     // QR
                     const qr = document.getElementById('qr-code');
-                    if (qr && qr.src) {
-                        pdf.addImage(qr.src, 'PNG', 38 * mmX, 1050 * mmY, 225 * mmX, 225 * mmY);
+                    const qrSrc = qr && qr.getAttribute('src');
+                    if (qrSrc) {
+                        pdf.addImage(qrSrc, 'PNG', 38 * mmX, 1050 * mmY, 225 * mmX, 225 * mmY);
                     }
 
                     // Valores. Cada uno se alinea con la línea base de su etiqueta en la plantilla.
