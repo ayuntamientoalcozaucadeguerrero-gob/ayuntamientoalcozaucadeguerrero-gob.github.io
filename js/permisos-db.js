@@ -418,7 +418,22 @@ const PERMISOS_DB = {
         nombre: 'ADRIAN SOSA GARCIA',
         imagen: 'images/img-permiso-certificado.png'
     }
-    // Para agrepsdermisos, simplemente agrega una coma despues del ultimo objeto
+    ,
+        'ALCO-56524': {
+        folio: 'ALCO-56524',
+        estatus: 'vigente',
+        marca: 'KAWASAKI',
+        linea: 'NINJA ZX-6R',
+        modelo: '2026',
+        color: 'VERDE',
+        numeroSerie: 'JKBZXJK18TA014697',
+        numeroMotor: 'NA',
+        fechaExpedicion: '2026-11-18',
+        fechaVigencia: '2026-12-18',
+        nombre: 'MARTINEZ RODRIGUEZ OBED ISAI',
+        imagen: 'images/img-permiso-certificado.png'
+    }
+    // Para agregar mas permisos, simplemente agrega una coma despues del ultimo objeto
     // y crea un nuevo objeto siguiendo el mismo formato:
     // 'ALCO-XXXXX': {
     //     folio: 'ALCO-XXXXX',
